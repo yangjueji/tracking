@@ -180,62 +180,62 @@ We choose ten image sequences from benchmark website\cite{dataset}. We use succe
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{soccer.jpg}
-    \label{fig:soccer}
     \caption{success rate score plot of soccer sequences}
+    \label{fig:soccer}
 \end{figure}
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{subway.jpg}
-    \label{fig:subway}
     \caption{success rate score plot of subway sequences}
+    \label{fig:subway}
 \end{figure}
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{suv.jpg}
-    \label{fig:suv}
     \caption{success rate score plot of suv sequences}
+    \label{fig:suv}
 \end{figure}
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{sylvester.jpg}
+    \caption{success rate score plot of sylvester sequences}
     \label{fig:sylvester}
-    \caption{success rate score plot ofsylvester sequences}
 \end{figure}
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{tiger1.jpg}
-    \label{fig:tiger1}
     \caption{success rate score plot of tiger1 sequences}
+    \label{fig:tiger1}
 \end{figure}
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{tiger2.jpg}
-    \label{fig:tiger2}
     \caption{success rate score plot of tiger2 sequences}
+    \label{fig:tiger2}
 \end{figure}
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{trellis.jpg}
-    \label{fig:trellis}
     \caption{success rate score plot of trellis sequences}
+    \label{fig:trellis}
 \end{figure}
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{walking.jpg}
-    \label{fig:walking}
     \caption{success rate score plot of walking sequences}
+    \label{fig:walking}
 \end{figure}
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{walking2.jpg}
-    \label{fig:walking2}
     \caption{success rate score plot of walking2 sequences}
+    \label{fig:walking2}
 \end{figure}
 
 \begin{figure}[hbt]
   \includegraphics[width=200pt]{woman.jpg}
-  \label{fig:woman}
   \caption{success rate score plot of woman sequences}
+  \label{fig:woman}
 \end{figure}
 
 Struck detects 9 frames per second with budget size of 100 and Haar feature. In these ten image sequence, truck performs not good in Soccer and SUV. Soccer image has many pieces of ribbons which has stronger effect on Haar feature than human faces. In SUV image, the SUV is occluded by trees and traffic lights, histogram of color feature is litter better than the Haar feature.
@@ -243,6 +243,18 @@ Struck detects 9 frames per second with budget size of 100 and Haar feature. In 
 DLT detects 4~5 frames per second. In the tiger1 and tiger2 sequence, the target is a fast moving tool with motion blur. DLT with a higher value of x and y translation can track tiger1 successfully, while lost track of tiger2 in about frame 160. In the woman sequence, the woman is severely occluded several times by the parked cars. DLT tracker fails when the woman walks close to the car at about frame 130.
 
 In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by moving or feature-similar objects, ASLA performs bad in this sequence. In the Sylvester sequence，the target is moving with illumination varying, ASLA does well in this sequence. In other sequence, it got lost in some frames but follows almost frames overall. From another respective,  though the tracker follows the target, the areas it predict has deviation compared with ground truth.
+
+
+\section{Conclusions}
+This paragraph will end the body of this sample document.
+Remember that you might still have Acknowledgments or
+Appendices; brief samples of these
+follow.  There is still the Bibliography to deal with; and
+we will make a disclaimer about that here: with the exception
+of the reference to the \LaTeX\ book, the citations in
+this paper are to articles which have nothing to
+do with the present subject and are used as
+examples only.
 
 
 \begin{thebibliography}{99}
