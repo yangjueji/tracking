@@ -1,30 +1,53 @@
-\documentclass{article}
+\documentclass{acm_proc_article-sp}
+
 \usepackage{amsmath,amssymb}
 \usepackage{latexsym}
-\usepackage{geometry}
 \usepackage{indentfirst}
 \usepackage{blindtext}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{url}
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\minbelow}{min}
-\title{Tracking Project Report}
-\author{Group 1}
+
 \begin{document}
+
+\title{Visual Object Tracking}
+\subtitle{A Quantitative Comparison}
+\numberofauthors{6}
+\author{Chuhang Zou, Zheng Yan, Yi Shi, Qing Ren, Caihua Shan, Jueji Yang}
 \maketitle
 
+\begin{abstract}
+This paper provides a sample of a \LaTeX\ document which conforms to
+the formatting guidelines for ACM SIG Proceedings.
+It complements the document \textit{Author's Guide to Preparing
+ACM SIG Proceedings Using \LaTeX$2_\epsilon$\ and Bib\TeX}. This
+source file has been written with the intention of being
+compiled under \LaTeX$2_\epsilon$\ and BibTeX.
+\end{abstract}
 
-\section{Overview}
+
+\section{Introduction}
+
+Object tracking is one of the most important components in a wide range of applications in computer vision, such as surveillance, human computer interaction, and medical imaging.
+
+
+\section{Related Work}
+In this section, we review recent algorithms for object tracking
+
+
+\section{Evaluated Algorithms}
 
 In this report, we investigate 6 visual tracking work and search for an appropriate evaluation criteria for those work. The 6 work are studied by 6 different people and each provide a report as a summary of their progress.
 
 
-\section{Struck: Structured Output Tracking with Kernels}
+\subsection{Struck: Structured Output Tracking with Kernels}
 This section demonstrates the tracking work by Jueji Yang.
 
-\subsection{Struck}
+\subsubsection{Struck}
 Struck\cite{struck} is different from other tracking-by-detection algorithms. Struck learns a function that directly estimates the object transformation between frames. Discriminant function $F:\mathcal{X} \times \mathcal{Y} \to \mathcal{R}$ with $X$ the sequence of images and $Y$ the possible bounding boxes transformations is used to predict:
 \[
 y_t = f(x_t^{P_{t-1}}) = \argmax_{y\in \mathcal{Y}}F(x_t^{P_{t-1}},y)
@@ -43,15 +66,15 @@ $\delta\Phi_i(y)=\Phi(x_i, y_i) - \Phi(x_i, y)$. This optimization aims to ensur
 
 The paper optimize the dual form of the optimization which will not be listed here in detail. $\Phi(x,y)$ only appears in inner products in the dual form of this optimization. So a joint kernel function $k(x,y,\bar{x},\bar{y}) = \langle \Phi(x,y), \Phi(\bar{x},\bar{y})\rangle$ is used which is the kernel between features(Haar, Histogram) of cropped boxes of images. And SMO-style step is also used to optimize the dual secondary convex optimization.
 
-\subsection{Evaluation}
+\subsubsection{Evaluation}
 The average overlap between estimated and ground truth throughout each sequence is used to measure the performance between this algorithm and other state-of-art algorithms in this paper.
 The speed of this algorithm is from 12.1FPS to 21.4FPS as reported.
 
 
-\section{The Deep Learning Tracker}
+\subsection{The Deep Learning Tracker}
 This section demonstrates the tracking work by Zheng Yan.
 
-\subsection{Introduction}
+\subsubsection{Introduction}
 According to \cite{dlt}, they propose a novel deep learning tracker (DLT) for robust visual tracking.
 
 During the offline training stage, they train an large stacked denoising autoencoder (SDAE) containing five small denoising autoencoders (DAEs) with the Tiny Images dataset \cite{tiny} as auxiliary image data to learn generic natural image features.
@@ -65,24 +88,24 @@ The overall network architecture is shown in Fig.~\ref{fig:dlt}(c).
 
 \begin{center}
     \begin{figure}[hbt]
-      \includegraphics[width=\textwidth]{dlt.png}
+      \includegraphics[width=0.5\textwidth]{dlt.png}
       \caption{Some key components of the network architecture: (a) denoising autoencoder; (b) stacked denoising autoencoder; (c) network for online tracking.}
       \label{fig:dlt}
     \end{figure}
 \end{center}
 
-\subsection{Evaluation}
+\subsubsection{Evaluation}
 
 The author empirically compare DLT with 7 state-of-the-art trackers using 10 challenging benchmark video sequences. They use two common performance metrics for quantitative comparison: success rate and central-pixel error. They also report the central-pixel errors over all frames for each video sequence and list the running time of each sequence in detail.
 
 
-\section{Context Tracker: Exploring Supporters and Distracters in Unconstrained Environments}
+\subsection{Context Tracker: Exploring Supporters and Distracters in Unconstrained Environments}
 This section demonstrates the tracking work by Caihua Shan.
 
-\subsection{Introduction}
+\subsubsection{Introduction}
     This paper uses additional context information to build a strong model. It uses two different terms: 1) Distracters are regions that have similar appearance as the target, 2) Supporters are local key-points around the object having motion correlation with the target in a short time span. The goal of this algorithm is to find all possible regions which look similar to the target to prevent drift, and to look for useful information around the target to have strong verification.
     
-\subsection{Algorithm}
+\subsubsection{Algorithm}
     The paper uses P-N Tracker as the basic target tracker with several extensions. It extends the randomized ferns to accept multiple objects, applies 6bitBP which helps to boost up the speed of the detector and uses online template-based object model by constructing it in binary search tree using k-means.
     \newline
     As for distracters, a testing sample confidence score is computed using Normalized Cross-Correlation(NCC) between it and the closest image patch in the object model. It chooses the best candidate as the tracking result and the remaining regions trigger new distracter trackers.
@@ -91,7 +114,7 @@ This section demonstrates the tracking work by Caihua Shan.
     \newline
     In unconstrained environments, the target may leave the FoV, or be completely occluded by other objects. The common trackers will simply switch to another region satisfying the threshold. Here, this tracker automatically exploits all the distracters and pays attention to them by tracking them simultaneously. Also, this tracker discovers a set of supporters to robustly identify the target among other similar regions.
 
-\subsection{Experiments}
+\subsubsection{Experiments}
     To show the performance of the tracker, the experiments are carried out in two different setups: one is to evaluate the contribution of context in the tracker, and the other is to compare with various state-of-the-art methods.
     \newline
     To emphasize the contribution of context in terms of distracters and supporters, the paper chooses two very challenging sequences which contains similar objects moving:  \textit{Multiplefaces}, and  \textit{Babies}. These sequences include several challenges such as out of plane rotation, total occlusion, target leaving FoV.
@@ -99,20 +122,20 @@ This section demonstrates the tracking work by Caihua Shan.
     To demonstrate the performance of context tracker the paper uses several recent state-of-the-art methods for comparison including: \textit{FragTracker (FT), MILTracker (MILT), Cotraining Tracker (CoTT), PNTracker, DNBSTracker (DNBST)} and \textit{VTDTracker}. The chosen data sets contain occlusion, object leaving FoV, very cluttered background, abrupt motion and motion blur. Several of them are recorded in unconstrained environments. The metric used in the experiment is the average center location error. It notes the frame number where a tracker starts to lose the object and then gets the right target in several frames before reacquisition happens. This metric balances the difference of initial bounding box.
 
 
-\section{Visual Tracking via Adaptive Structural Local Sparse Appearance Model}
+\subsection{Visual Tracking via Adaptive Structural Local Sparse Appearance Model}
 This section demonstrates the tracking work by Yi Shi.
 
-\subsection{Introduction}
+\subsubsection{Introduction}
 Visual Tracking via Adaptive Structural Local Sparse Appearance Model (ASLA) is one of Posters in CVPR2012 and performs favorably against several state-of-the-art methods on benchmark challenge.
 
 ASLA is an efficient methods combined with structural local sparse model and adaptive template update strategy. It samples overlapped local image patches within the target region, whose sparse coding obtained by a novel alignment-pooling method contains both spatial and partial information of the target object. This representation guarantees more accurately location and less occlusion drift. In addition, the online adaptive template strategy based on both incremental subspace learning and sparse representation is employed in coding, far more improving the performance compared by methods based on static local or holistic sparse dictionary when there is similar object in the scenes.
 
-\subsection{Algorithm}
+\subsubsection{Algorithm}
 The proposed algorithm is implemented in MATLAB and runs at 1.5 frames per second on a Pentium 2.7 GHz Dual Core PC with 2GB memory.
 
 The $l_1$ minimization problem is solved with the SPAMS package and the regularization constant $\lambda$ is set to 0.01 in all experiments. For each sequence, the location of the target object is manually labeled in the first frame. We resize the target image patch to $32\times 32$ pixels and extract overlapped $16\times16$ local patches within the target region with 8 pixels as step length. As for the template update, 8 eigenvectors are used to carry out incremental subspace learning method in all experiments every 5 frames.
 
-\subsection{Experiments}
+\subsubsection{Experiments}
 \label{sec:asla_section}
 Nine challenging sequences from prior work \cite{shi1,shi2,shi3,shi4,shi5}, the CAVIAR data set \footnote{http://groups.inf.ed.ac.uk/vision/CAVIAR/CAVIARDATA1/} and our own experiment its performance. The challenges of these videos include illumination variation, partial occlusion, pose variation, background clutter and scale change. Six state-of-the-art tracking methods including incremental visual tracking (IVT) method [4], fragment-based (FragTrack) tracking method \cite{shi1}, $l_1$ tracker ($l_1$) \cite{shi6}, multiple instance learning (MIL) tracker \cite{shi2}, visual tracking decomposition (VTD) method \cite{shi3} and P-N learning (PN) tracker. \cite{shi7}
 
@@ -120,88 +143,111 @@ Both quantitative and qualitative evaluation show its robust and favorable resul
 success rate score = area($R_T \bigcap R_G$)$/$area($R_T \bigcup R_G$), given the tracking result $R_T$ and ground truth $R_U$, 3) relative position errors (in pixels) between the center and the tracking results. The latter includes sensed results under 1) occlusion, 2) illumination-change and 3) background-clutter condition.
 
 
-\section{Context Tracker: Exploring Supporters and Distracters in Unconstrained Environments}
+\subsection{Context Tracker: Exploring Supporters and Distracters in Unconstrained Environments}
 This section demonstrates the tracking work by Qing Ren.
 
-\subsection{Introduction}
-Tracking is a fundamental problem in computer vision, sometimes it is desirable to track an object with little prior knowledge. Almost all the methods by Tracking-by-detection, a extremely useful approach, have one thing in common, that is a sparse sampling strategy. Several samples, near the target, will be collected in every frame. For each sample, it typically characterizes a subwindow the same size as the target and most of the samples have a huge amount of overlap, causing a lot of redundancy. In order to overcome this weakness, we address a new theory. We show that the process of taking subwindows of an image indce circulant structrue. Then establishing links to Fourier analysis that allows the use of the Fast Fourier Transform to quickly incorporate information from all subwindows, without iterating over them. Classification on non-linear feature spaces with the Kernel Trick can be done as efficiently as in the original image space. All running in $O(n^2 logn)$ for $n * n$ images
+\subsubsection{Introduction}
+Tracking is a fundamental problem in computer vision, sometimes it is desirable to track an object with little prior knowledge. Almost all the methods by Tracking-by-detection, a extremely useful approach, have one thing in common, that is a sparse sampling strategy. Several samples, near the target, will be collected in every frame. For each sample, it typically characterizes a subwindow the same size as the target and most of the samples have a huge amount of overlap, causing a lot of redundancy. In order to overcome this weakness, we address a new theory. We show that the process of taking subwindows of an image indce circulant structure. Then establishing links to Fourier analysis that allows the use of the Fast Fourier Transform to quickly incorporate information from all subwindows, without iterating over them. Classification on non-linear feature spaces with the Kernel Trick can be done as efficiently as in the original image space. All running in $O(n^2 logn)$ for $n * n$ images.
 
 
-\section{Discrete-Continuous Optimization for Multi-Target Tracking}
+\subsection{Discrete-Continuous Optimization for Multi-Target Tracking}
 This section demonstrates the tracking work by Chuhang Zou.
 
-\subsection{Introduction}
-Recent approaches for multi-target tracking often use discrete optimization. However, this has the disadvantage that trajectories need to be pre-computed or represented discretely, thus limiting accuracy. In this paper, the author instead formulate multi-target tracking as a discretecontinuous optimization problem that handles each aspect in its natural domain and allows leveraging powerful methods for multi-model fitting. Data association is performed using discrete optimization with label costs, yielding near optimality. Trajectory estimation is posed as a continuous fitting problem with a simple closed-form solution, which is used in turn to update the label costs.
+\subsubsection{Introduction}
+Recent approaches for multi-target tracking often use discrete optimization. However, this has the disadvantage that trajectories need to be pre-computed or represented discretely, thus limiting accuracy. In this paper, the author instead formulate multi-target tracking as a discrete-continuous optimization problem that handles each aspect in its natural domain and allows leveraging powerful methods for multi-model fitting. Data association is performed using discrete optimization with label costs, yielding near optimality. Trajectory estimation is posed as a continuous fitting problem with a simple closed-form solution, which is used in turn to update the label costs.
 
-\subsection{Algorithm}
+\subsubsection{Algorithm}
 Targets are separated from the background in a preprocessing step and form a set of target hypotheses, which are then used to infer the targets¡¯ trajectories. Then algorithm then run a sliding window detector, based on SVM classification of histograms of oriented gradients (HOG) and relative optical flow (HOF). The detector yields a set of target hypotheses D.
 
 Given the set of target hypotheses D, the goal is to identify a set of target trajectories $\tau = {\tau_1,\ldots,\tau_N}$. This implies that it also need to search for a data association $f$, which for each detection $d \in D$ assigns a label $f_f \in L = {1,\ldots,N}\bigcup \emptyset$. Thereby a detection is either identified as belonging to one of the trajectories or, using the additional outlier label $\emptyset$, identified as a false alarm.
 The eventual aim is to perform multi-target tracking by minimizing a joint energy $E(\tau , f)$ w.r.t. the trajectories $\tau$ and the data association $f$. 
 
-\subsection{Experiments}
+\subsubsection{Experiments}
 
-\subsubsection{CLEAR MOT metrics}
+\begin{itemize}
+\item CLEAR MOT metrics
+
 For the quantitative evaluation, the author applies the widely used CLEAR MOT metrics The Multi-Object Tracking Accuracy (MOTA) combines all errors (missed targets, false alarms, identity switches) into one number, normalized to the range 0..100 \%. A match between the tracker output and the ground truth is defined as >50\% intersection-over-union of their bounding boxes. The related Multi-Object Detection Accuracy (MODA) only checks for missed targets and false alarms, but does not penalize trajectories switching from one target to another. The Multi-Object Tracking Precision (MOTP) averages the bounding box overlap over all tracked targets as a measure of localization accuracy, whereas the closely related MODP averages the overlap over all frames.
 
-\subsubsection{Multi-target tracking evaluation tool}
+\item Multi-target tracking evaluation tool
+
 This is a automatic tracking evaluation tool online \footnote{http://iris.usc.edu/people/yangbo/downloads.html}. The evaluation tool will provide detection recall, detection precision, number of ground truth detections, number of correct detections, number of false detections, number of total detections, number of total tracks in ground truth, number of generated tracks, proportion of mostly tracked, partly tracked, and mostly lost trajectories, number of fragments, and number of id switches.
+\end{itemize}
 
 
 \section{Experiments}
 We choose ten image sequences from benchmark website\cite{dataset}. We use success rate score = area($R_T \bigcap R_G$)$/$area($R_T \bigcup R_G$) which is described both in Section ~\ref{sec:asla_section} and others tests\cite{benchmark}. And then calculate the percentage of frames that has a score bigger than Overlap threshold showed in Fig.~\ref{fig:soccer}.
 
 \begin{figure}[hbt]
-  \begin{subfigure}[b]{0.5\textwidth}
     \includegraphics[width=200pt]{soccer.jpg}
     \label{fig:soccer}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.5\textwidth}
+    \caption{success rate score plot of soccer sequences}
+\end{figure}
+
+\begin{figure}[hbt]
     \includegraphics[width=200pt]{subway.jpg}
     \label{fig:subway}
-  \end{subfigure}
-  \caption{success rate score plot of soccer and subway sequences}
+    \caption{success rate score plot of subway sequences}
 \end{figure}
 
 \begin{figure}[hbt]
-  \includegraphics[width=200pt]{suv.jpg}
-  \includegraphics[width=200pt]{sylvester.jpg}
-  \caption{success rate score plot of suv and sylvester sequences}
-\end{figure}
-\label{fig:sylvester}
-
-\begin{figure}[hbt]
-  \includegraphics[width=200pt]{tiger1.jpg}
-  \includegraphics[width=200pt]{tiger2.jpg}
-  \label{fig:tiger2}
-  \caption{success rate score plot of tiger1 and tiger2 sequences}
+    \includegraphics[width=200pt]{suv.jpg}
+    \label{fig:suv}
+    \caption{success rate score plot of suv sequences}
 \end{figure}
 
 \begin{figure}[hbt]
-  \includegraphics[width=200pt]{trellis.jpg}
-  \includegraphics[width=200pt]{walking.jpg}
-  \label{fig:walking}
-  \caption{success rate score plot of trellis and walking sequences}
+    \includegraphics[width=200pt]{sylvester.jpg}
+    \label{fig:sylvester}
+    \caption{success rate score plot ofsylvester sequences}
 \end{figure}
 
 \begin{figure}[hbt]
-  \includegraphics[width=200pt]{walking2.jpg}
+    \includegraphics[width=200pt]{tiger1.jpg}
+    \label{fig:tiger1}
+    \caption{success rate score plot of tiger1 sequences}
+\end{figure}
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{tiger2.jpg}
+    \label{fig:tiger2}
+    \caption{success rate score plot of tiger2 sequences}
+\end{figure}
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{trellis.jpg}
+    \label{fig:trellis}
+    \caption{success rate score plot of trellis sequences}
+\end{figure}
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{walking.jpg}
+    \label{fig:walking}
+    \caption{success rate score plot of walking sequences}
+\end{figure}
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{walking2.jpg}
+    \label{fig:walking2}
+    \caption{success rate score plot of walking2 sequences}
+\end{figure}
+
+\begin{figure}[hbt]
   \includegraphics[width=200pt]{woman.jpg}
   \label{fig:woman}
-  \caption{success rate score plot of walking2 and woman sequences}
+  \caption{success rate score plot of woman sequences}
 \end{figure}
 
 Struck detects 9 frames per second with budget size of 100 and Haar feature. In these ten image sequence, truck performs not good in Soccer and SUV. Soccer image has many pieces of ribbons which has stronger effect on Haar feature than human faces. In SUV image, the SUV is occluded by trees and traffic lights, histogram of color feature is litter better than the Haar feature.
 
 DLT detects 4~5 frames per second. In the tiger1 and tiger2 sequence, the target is a fast moving tool with motion blur. DLT with a higher value of x and y translation can track tiger1 successfully, while lost track of tiger2 in about frame 160. In the woman sequence, the woman is severely occluded several times by the parked cars. DLT tracker fails when the woman walks close to the car at about frame 130.
 
-In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by moving or feature-similar objects, ASLA performs bad in this sequence. In the Sylvester sequence，the target is moving with illumination varying, ASLA does well in this sequence. In other sequence, it losts in some frames but follows almost frames overall. From another respective,  though the tracker follows the target, the areas it predict has deviation compared with  groundtruth.
+In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by moving or feature-similar objects, ASLA performs bad in this sequence. In the Sylvester sequence，the target is moving with illumination varying, ASLA does well in this sequence. In other sequence, it got lost in some frames but follows almost frames overall. From another respective,  though the tracker follows the target, the areas it predict has deviation compared with ground truth.
 
 
 \begin{thebibliography}{99}
 \bibitem{struck}
-S. Hare, A. Saffari, and P. H. S. Torr. Struck: Structured Output
-Tracking with Kernels. In ICCV, 2011.
+S. Hare, A. Saffari, and P. H. S. Torr. Struck: Structured Output Tracking with Kernels. In ICCV, 2011.
 
 \bibitem{shi1}
 A. Adam, E. Rivlin, and I. Shimshoni. Robust fragments-based tracking using the integral histogram. In CVPR, 2006.
@@ -234,7 +280,7 @@ Torralba, Antonio, Robert Fergus, and William T. Freeman. 80 million tiny images
 Y.Wu, J. Lim, M.H. Y. Online Object Tracking: A Benchmark. In CVPR, 2013
 
 \bibitem{dataset}
-https://sites.google.com/site/trackerbenchmark/benchmarks/v10
+\url{https://sites.google.com/site/trackerbenchmark/benchmarks/v10}
 
 \end{thebibliography}
 
