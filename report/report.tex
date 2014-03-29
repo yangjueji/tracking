@@ -154,61 +154,61 @@ For each tracker, we fine-tuned parameters in the source code by our hand for ea
 The performance in each sequence for all the trackers is summarized by the success plots as shown in Fig~\ref{fig:soccer} to Fig~\ref{fig:woman}.
 
 \begin{figure}[hbt]
-    \includegraphics[width=200pt]{soccer.jpg}
+    \includegraphics[width=200pt]{soccer}
     \caption{success rate score plot of soccer sequences}
     \label{fig:soccer}
 \end{figure}
 
 \begin{figure}[hbt]
-    \includegraphics[width=200pt]{subway.jpg}
+    \includegraphics[width=200pt]{subway}
     \caption{success rate score plot of subway sequences}
     \label{fig:subway}
 \end{figure}
 
 \begin{figure}[hbt]
-    \includegraphics[width=200pt]{suv.jpg}
+    \includegraphics[width=200pt]{suv}
     \caption{success rate score plot of suv sequences}
     \label{fig:suv}
 \end{figure}
 
 \begin{figure}[hbt]
-    \includegraphics[width=200pt]{sylvester.jpg}
+    \includegraphics[width=200pt]{sylvester}
     \caption{success rate score plot of sylvester sequences}
     \label{fig:sylvester}
 \end{figure}
 
 \begin{figure}[hbt]
-    \includegraphics[width=200pt]{tiger1.jpg}
+    \includegraphics[width=200pt]{tiger1}
     \caption{success rate score plot of tiger1 sequences}
     \label{fig:tiger1}
 \end{figure}
 
 \begin{figure}[hbt]
-    \includegraphics[width=200pt]{tiger2.jpg}
+    \includegraphics[width=200pt]{tiger2}
     \caption{success rate score plot of tiger2 sequences}
     \label{fig:tiger2}
 \end{figure}
 
 \begin{figure}[hbt]
-    \includegraphics[width=200pt]{trellis.jpg}
+    \includegraphics[width=200pt]{trellis}
     \caption{success rate score plot of trellis sequences}
     \label{fig:trellis}
 \end{figure}
 
 \begin{figure}[hbt]
-    \includegraphics[width=200pt]{walking.jpg}
+    \includegraphics[width=200pt]{walking}
     \caption{success rate score plot of walking sequences}
     \label{fig:walking}
 \end{figure}
 
 \begin{figure}[hbt]
-    \includegraphics[width=200pt]{walking2.jpg}
+    \includegraphics[width=200pt]{walking2}
     \caption{success rate score plot of walking2 sequences}
     \label{fig:walking2}
 \end{figure}
 
 \begin{figure}[hbt]
-  \includegraphics[width=200pt]{woman.jpg}
+  \includegraphics[width=200pt]{woman}
   \caption{success rate score plot of woman sequences}
   \label{fig:woman}
 \end{figure}
@@ -224,22 +224,26 @@ DLT detects 4~5 frames per second. In the tiger1 and tiger2 sequence, the target
 
 In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by moving or feature-similar objects, ASLA performs bad in this sequence. In the Sylvester sequence，the target is moving with illumination varying, ASLA does well in this sequence. In other sequence, it got lost in some frames but follows almost frames overall. From another respective,  though the tracker follows the target, the areas it predict has deviation compared with ground truth.
 
+\subsection{Attribute-based Performance Analysis}
+
+\subsection{Speed Analysis}
+
 \begin{table}
 	\centering
 	\begin{tabular}{|c|c|l|} \hline
-		Method & FPS\\ \hline
-		Struck & 9.3\\ \hline
-		DLT & 17.0\\ \hline
-		CXT & 15.3\\ \hline
-		ASLA & 8.5\\ \hline
-		DCMT & ?.?\\ \hline
-		TLD & ?.?\\ \hline
+		Method & Implementation & FPS\\ \hline
+		Struck & C & 9.3\\ \hline
+		DLT & C \& MATLAB & 17.0\\ \hline
+		CXT & C \& MATLAB & 15.3\\ \hline
+		ASLA & C \& MATLAB & 8.5\\ \hline
+		DCMT & ? & ?.?\\ \hline
+		TLD & C \& MATLAB & 13.2\\ \hline
 	\end{tabular}
 	\caption{Comparison of average running time on woman video sequences (in fps).}
 	\label{table:time}
 \end{table}
 
-We also list the average running time of 10 sequence in detail in Table ~\ref{table:time}. Thanks to advances of the GPU technology, DLT can achieve an average frame rate of 17 fps\footnote{Running on a PC with Nvidia GTX 760} which is sufficient for many real-time applications.
+We also list the average running time of 10 sequence in detail in Table~\ref{table:time}. Thanks to advances of the GPU technology, DLT can achieve an average frame rate of 17 fps which is sufficient for many real-time applications.
 
 
 \section{Conclusions}
