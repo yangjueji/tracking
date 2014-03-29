@@ -100,7 +100,7 @@ The overall network architecture is shown in Fig.~\ref{fig:dlt}(c).
     \newline
     In unconstrained environments, the target may leave the FoV, or be completely occluded by other objects. The common trackers will simply switch to another region satisfying the threshold. Here, this tracker automatically exploits all the distracters and pays attention to them by tracking them simultaneously. Also, this tracker discovers a set of supporters to robustly identify the target among other similar regions.
 
-\subsection{Visual Tracking via Adaptive Structural Local Sparse Appearance Model}
+\subsection{ASLA}
 
 \label{sec:asla_section}
 
@@ -112,10 +112,7 @@ The proposed algorithm is implemented in MATLAB and runs at 1.5 frames per secon
 
 The $l_1$ minimization problem is solved with the SPAMS package and the regularization constant $\lambda$ is set to 0.01 in all experiments. For each sequence, the location of the target object is manually labeled in the first frame. We resize the target image patch to $32\times 32$ pixels and extract overlapped $16\times16$ local patches within the target region with 8 pixels as step length. As for the template update, 8 eigenvectors are used to carry out incremental subspace learning method in all experiments every 5 frames.
 
-\subsection{Context Tracker: Exploring Supporters and Distracters in Unconstrained Environments}
-This section demonstrates the tracking work by Qing Ren.
-
-\subsubsection{Introduction}
+\subsection{TLD}
 Tracking is a fundamental problem in computer vision, sometimes it is desirable to track an object with little prior knowledge. Almost all the methods by Tracking-by-detection, a extremely useful approach, have one thing in common, that is a sparse sampling strategy. Several samples, near the target, will be collected in every frame. For each sample, it typically characterizes a subwindow the same size as the target and most of the samples have a huge amount of overlap, causing a lot of redundancy. In order to overcome this weakness, we address a new theory. We show that the process of taking subwindows of an image indce circulant structure. Then establishing links to Fourier analysis that allows the use of the Fast Fourier Transform to quickly incorporate information from all subwindows, without iterating over them. Classification on non-linear feature spaces with the Kernel Trick can be done as efficiently as in the original image space. All running in $O(n^2 logn)$ for $n * n$ images.
 
 \subsection{Discrete-Continuous Optimization for Multi-Target Tracking}
@@ -144,7 +141,7 @@ We also list the average running time of 10 sequence in detail in Table ~\ref{ta
 
 \section{Experiments}
 
-We choose 10 image sequences from benchmark website \cite{dataset} to cover all situations.
+We choose 10 image sequences from website \cite{dataset} to cover all situations.
 For each tracker, we fine-tuned parameters in the source code by our hand for each sequences.
 
 \subsection{Sequences Analysis}
