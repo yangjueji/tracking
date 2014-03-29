@@ -97,6 +97,8 @@ This section demonstrates the tracking work by Caihua Shan.
 \subsection{Visual Tracking via Adaptive Structural Local Sparse Appearance Model}
 This section demonstrates the tracking work by Yi Shi.
 
+\label{sec:asla_section}
+
 \subsubsection{Introduction}
 Visual Tracking via Adaptive Structural Local Sparse Appearance Model (ASLA) is one of Posters in CVPR2012 and performs favorably against several state-of-the-art methods on benchmark challenge.
 
@@ -126,8 +128,29 @@ Targets are separated from the background in a preprocessing step and form a set
 Given the set of target hypotheses D, the goal is to identify a set of target trajectories $\tau = {\tau_1,\ldots,\tau_N}$. This implies that it also need to search for a data association $f$, which for each detection $d \in D$ assigns a label $f_f \in L = {1,\ldots,N}\bigcup \emptyset$. Thereby a detection is either identified as belonging to one of the trajectories or, using the additional outlier label $\emptyset$, identified as a false alarm.
 The eventual aim is to perform multi-target tracking by minimizing a joint energy $E(\tau , f)$ w.r.t. the trajectories $\tau$ and the data association $f$. 
 
+
+\section{Evaluation Criterion}
+
+In this report, we use success plot for quantitative analysis.
+In addition, we evaluate speed of each algorithm by average running time.
+
+\textbf{Success plot.}
+One widely used evaluation metric on tracking precision is the bounding box overlap. 
+Given the tracked bounding box $r_t$ and the ground truth bounding box $r_a$, the overlap score is defined as $S = \frac{|r_t \bigcap r_a|}{|r_t \bigcup r_a|}$
+
+And then calculate the percentage of frames that has a score bigger than overlap threshold showed in Fig.~\ref{fig:soccer}.
+
+\textbf{Average running time.}
+
+
 \section{Experiments}
-We choose ten image sequences from benchmark website\cite{dataset}. We use success rate score = area($R_T \bigcap R_G$)$/$area($R_T \bigcup R_G$) which is described both in Section ~\ref{sec:asla_section} and others tests\cite{benchmark}. And then calculate the percentage of frames that has a score bigger than Overlap threshold showed in Fig.~\ref{fig:soccer}.
+
+We choose 10 image sequences from benchmark website \cite{dataset} to cover all situations.
+For each tracker, we fine-tuned parameters in the source code by our hand for each sequences.
+
+\subsection{Sequences Analysis}
+
+The performance in each sequence for all the trackers is summarized by the success plots as shown in Fig~\ref{fig:soccer} to Fig~\ref{fig:woman}.
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{soccer.jpg}
@@ -207,7 +230,10 @@ In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by
 		CSK & ?.?\\ \hline
 	\end{tabular}
 	\caption{Comparison of average running time on woman video sequences (in fps).}
+	\label{table:time}
 \end{table}
+
+We also list the average running time of 10 sequence in detail in Table ~\ref{table:time}. Thanks to advances of the GPU technology, DLT can achieve an average frame rate of 17 fps\footnote{Running on a PC with Nvidia GTX 760} which is sufficient for many real-time applications.
 
 
 \section{Conclusions}
