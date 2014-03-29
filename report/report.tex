@@ -38,7 +38,7 @@ And the content of the images are not rich, most of which will be our faces.
 Thus, we collect our data from the Internet\cite{dataset}.
 These datas contain out-of-view, occlusion, illumination variation, scale variation, deformation, motion blur, fast motion, background clutters and other factors that will cause large tracking inaccuracy which is rich enough to test these state-of-art algorithms.
 
-There are large mount of algorithms released to the public including struck\cite{struck}, deep learning track\cite{dlt}, DCMT\cite{dcmt}, ASLA\cite{asla}, TLD\cite{tld}, CXT\cite{cxt} and other state-of-art methods that perform quite well in their papers. 
+There are large mount of algorithms released to the public including Struck\cite{struck}, deep learning track\cite{dlt}, DCMT\cite{dcmt}, ASLA\cite{asla}, TLD\cite{tld}, CXT\cite{cxt} and other state-of-art methods that perform quite well in their papers. 
 We find these methods have mainly two problems: 
 1). Overfitting on the initial frame with initial position, which will cause target missing when occlusion, out-of-plane rotation happen, but perform better in fast motion and out-of-view situations;
 2). Online training over the sequence and overfitting the following tracked images will cause target shift when out-of-view happened.
@@ -50,7 +50,7 @@ To test the algorithms on these two problems, we pick out some notable image seq
 \section{Evaluated Algorithms}
 In this report, we investigate 6 visual tracking works and search for an appropriate evaluation criteria for those work. The algorithm details of these 6 tracking methods are listed as follow:
 
-\subsection{struck}
+\subsection{Struck}
 Struck\cite{struck} is different from other tracking-by-detection algorithms. Struck learns a function that directly estimates the object transformation between frames. Discriminant function $F:\mathcal{X} \times \mathcal{Y} \to \mathcal{R}$ with $X$ the sequence of images and $Y$ the possible bounding boxes transformations is used to predict:
 \[
 y_t = f(x_t^{P_{t-1}}) = \argmax_{y\in \mathcal{Y}}F(x_t^{P_{t-1}},y)
@@ -127,16 +127,17 @@ The eventual aim is to perform multi-target tracking by minimizing a joint energ
 \section{Evaluation Criterion}
 
 In this report, we use success plot for quantitative analysis.
-In addition, we evaluate speed of each algorithm by average running time.
+In addition, we evaluate speed of each algorithm by average running time in fps.
 
 \textbf{Success plot.}
 One widely used evaluation metric on tracking precision is the bounding box overlap. 
 Given the tracked bounding box $r_t$ and the ground truth bounding box $r_a$, the overlap score is defined as $S = \frac{|r_t \bigcap r_a|}{|r_t \bigcup r_a|}$.
-
 And then calculate the percentage of frames that has a score bigger than overlap threshold showed in Fig.~\ref{fig:soccer}.
+The success plot shows the ratios of successful frames at the thresholds varied from 0 to 1. 
 
 \textbf{Average running time.}
-We also list the average running time of 10 sequence in detail in Table ~\ref{table:time}. Average running time stands for whether the algorithm is sufficient for real-time applications.
+Average running time is a metric which can judge whether the algorithm is sufficient for real-time applications.
+We represent average running time in fps to give readers a more direct sense.
 
 
 \section{Experiments}
@@ -227,8 +228,8 @@ In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by
 		DLT & 17.0\\ \hline
 		CXT & 15.3\\ \hline
 		ASLA & 8.5\\ \hline
-		Zou & ?.?\\ \hline
-		CSK & ?.?\\ \hline
+		DCMT & ?.?\\ \hline
+		TLD & ?.?\\ \hline
 	\end{tabular}
 	\caption{Comparison of average running time on woman video sequences (in fps).}
 	\label{table:time}
