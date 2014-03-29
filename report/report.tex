@@ -36,7 +36,8 @@ Object tracking is one of the most important components in a wide range of appli
 
 
 \section{Related Work}
-In this section, we review recent algorithms for object tracking
+
+In this section, we review recent algorithms for object tracking
 
 
 \section{Evaluated Algorithms}
@@ -243,6 +244,20 @@ Struck detects 9 frames per second with budget size of 100 and Haar feature. In 
 DLT detects 4~5 frames per second. In the tiger1 and tiger2 sequence, the target is a fast moving tool with motion blur. DLT with a higher value of x and y translation can track tiger1 successfully, while lost track of tiger2 in about frame 160. In the woman sequence, the woman is severely occluded several times by the parked cars. DLT tracker fails when the woman walks close to the car at about frame 130.
 
 In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by moving or feature-similar objects, ASLA performs bad in this sequence. In the Sylvester sequence，the target is moving with illumination varying, ASLA does well in this sequence. In other sequence, it got lost in some frames but follows almost frames overall. From another respective,  though the tracker follows the target, the areas it predict has deviation compared with ground truth.
+
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|l|} \hline
+		Method & FPS\\ \hline
+		Struck & 15.8\\ \hline
+		DLT & 17.5\\ \hline
+		CXT & 15.3\\ \hline
+		ASLA & 8.5\\ \hline
+		Zou & ?.?\\ \hline
+		CSK & ?.?\\ \hline
+	\end{tabular}
+	\caption{Comparison of average running time on woman video sequences (in fps).}
+\end{table}
 
 
 \section{Conclusions}
