@@ -113,7 +113,15 @@ The proposed algorithm is implemented in MATLAB and runs at 1.5 frames per secon
 The $l_1$ minimization problem is solved with the SPAMS package and the regularization constant $\lambda$ is set to 0.01 in all experiments. For each sequence, the location of the target object is manually labeled in the first frame. We resize the target image patch to $32\times 32$ pixels and extract overlapped $16\times16$ local patches within the target region with 8 pixels as step length. As for the template update, 8 eigenvectors are used to carry out incremental subspace learning method in all experiments every 5 frames.
 
 \subsection{TLD}
+Tracking is a fundamental problem in computer vision, sometimes it is desirable to track an object with little prior knowledge. Almost all the methods by Tracking-by-detection, a extremely useful approach, have one thing in common, that is a sparse sampling strategy. Several samples, near the target, will be collected in every frame. For each sample, it typically characterizes a subwindow the same size as the target and most of the samples have a huge amount of overlap, causing a lot of redundancy. In order to overcome this weakness, we address a new theory. We show that the process of taking subwindows of an image indce circulant structure. Then establishing links to Fourier analysis that allows the use of the Fast Fourier Transform to quickly incorporate information from all subwindows, without iterating over them. Classification on non-linear feature spaces with the Kernel Trick can be done as efficiently as in the original image space. All running in $O(n^2 logn)$ for $n * n$ images.
 
+\subsection{Discrete-Continuous Optimization for Multi-Target Tracking}
+Recent approaches for multi-target tracking often use discrete optimization. However, this has the disadvantage that trajectories need to be pre-computed or represented discretely, thus limiting accuracy. In this paper, the author instead formulate multi-target tracking as a discrete-continuous optimization problem that handles each aspect in its natural domain and allows leveraging powerful methods for multi-model fitting. Data association is performed using discrete optimization with label costs, yielding near optimality. Trajectory estimation is posed as a continuous fitting problem with a simple closed-form solution, which is used in turn to update the label costs.
+
+Targets are separated from the background in a preprocessing step and form a set of target hypotheses, which are then used to infer the targets¡¯ trajectories. Then algorithm then run a sliding window detector, based on SVM classification of histograms of oriented gradients (HOG) and relative optical flow (HOF). The detector yields a set of target hypotheses D.
+
+Given the set of target hypotheses D, the goal is to identify a set of target trajectories $\tau = {\tau_1,\ldots,\tau_N}$. This implies that it also need to search for a data association $f$, which for each detection $d \in D$ assigns a label $f_f \in L = {1,\ldots,N}\bigcup \emptyset$. Thereby a detection is either identified as belonging to one of the trajectories or, using the additional outlier label $\emptyset$, identified as a false alarm.
+The eventual aim is to perform multi-target tracking by minimizing a joint energy $E(\tau , f)$ w.r.t. the trajectories $\tau$ and the data association $f$. 
 
 
 \section{Evaluation Criterion}
@@ -134,7 +142,7 @@ We represent average running time in fps to give readers a more direct sense.
 
 \section{Experiments}
 
-We choose 10 image sequences from benchmark website \cite{dataset} to cover all situations.
+We choose 10 image sequences from website \cite{dataset} to cover all situations.
 For each tracker, we fine-tuned parameters in the source code by our hand for each sequences.
 
 \subsection{Sequences Analysis}
