@@ -25,7 +25,15 @@ Object tracking is a such import task in computer vision that many kinds of meth
 \end{abstract}
 
 \section{Introduction}
-Object tracking is one of the core problems in a wide range of applications in computer vision, such as surveillance, human computer interaction, augmented reality, and medical imaging. In most areas of computer vision like scene understanding and action recognition, object tracking is regarded as an essential component. Object tracking problem is to estimate the position of target in video sequence given the position of the target in the first frame. Most algorithms perform bad when occlusion, out-of-view appear in the sequence.
+Object tracking is one of the core problems in a wide range of applications in computer vision, such as surveillance, human computer interaction, augmented reality, and medical imaging.
+In most areas of computer vision like scene understanding and action recognition, object tracking is regarded as an essential component.
+Object tracking problem is to estimate the position of target in video sequence given the position of the target in the first frame.
+Most algorithms perform bad when occlusion, out-of-view appear in the sequence.
+Therefore, we evaluate the preformance over the data sequence separately and discuss the bad cases for each algorithm.
+
+It needs lots of time 
+We colloct our data from the Internet\cite{dataset}.
+These datas contain out-of-view, occlusion, illumination variation, scale variation, deformation, motion blur, fast motion, background clutters and other factors.
 
 \section{Related Work}
 In this section, we review recent algorithms for object tracking
@@ -37,9 +45,6 @@ In this report, we investigate 6 visual tracking work and search for an appropri
 
 
 \subsection{Struck: Structured Output Tracking with Kernels}
-This section demonstrates the tracking work by Jueji Yang.
-
-\subsubsection{Struck}
 Struck\cite{struck} is different from other tracking-by-detection algorithms. Struck learns a function that directly estimates the object transformation between frames. Discriminant function $F:\mathcal{X} \times \mathcal{Y} \to \mathcal{R}$ with $X$ the sequence of images and $Y$ the possible bounding boxes transformations is used to predict:
 \[
 y_t = f(x_t^{P_{t-1}}) = \argmax_{y\in \mathcal{Y}}F(x_t^{P_{t-1}},y)
@@ -59,9 +64,6 @@ $\delta\Phi_i(y)=\Phi(x_i, y_i) - \Phi(x_i, y)$. This optimization aims to ensur
 The paper optimize the dual form of the optimization which will not be listed here in detail. $\Phi(x,y)$ only appears in inner products in the dual form of this optimization. So a joint kernel function $k(x,y,\bar{x},\bar{y}) = \langle \Phi(x,y), \Phi(\bar{x},\bar{y})\rangle$ is used which is the kernel between features(Haar, Histogram) of cropped boxes of images. And SMO-style step is also used to optimize the dual secondary convex optimization.
 
 \subsection{The Deep Learning Tracker}
-This section demonstrates the tracking work by Zheng Yan.
-
-\subsubsection{Introduction}
 According to \cite{dlt}, they propose a novel deep learning tracker (DLT) for robust visual tracking.
 
 During the offline training stage, they train an large stacked denoising autoencoder (SDAE) containing five small denoising autoencoders (DAEs) with the Tiny Images dataset \cite{tiny} as auxiliary image data to learn generic natural image features.
@@ -81,13 +83,9 @@ The overall network architecture is shown in Fig.~\ref{fig:dlt}(c).
     \end{figure}
 \end{center}
 
-\subsection{Context Tracker: Exploring Supporters and Distracters in Unconstrained Environments}
-This section demonstrates the tracking work by Caihua Shan.
-
-\subsubsection{Introduction}
-    This paper uses additional context information to build a strong model. It uses two different terms: 1) Distracters are regions that have similar appearance as the target, 2) Supporters are local key-points around the object having motion correlation with the target in a short time span. The goal of this algorithm is to find all possible regions which look similar to the target to prevent drift, and to look for useful information around the target to have strong verification.
+\subsection{Context Tracker}
+    CXT(Context Tracker) uses additional context information to build a strong model. It uses two different terms: 1) Distracters are regions that have similar appearance as the target, 2) Supporters are local key-points around the object having motion correlation with the target in a short time span. The goal of this algorithm is to find all possible regions which look similar to the target to prevent drift, and to look for useful information around the target to have strong verification.
     
-\subsubsection{Algorithm}
     The paper uses P-N Tracker as the basic target tracker with several extensions. It extends the randomized ferns to accept multiple objects, applies 6bitBP which helps to boost up the speed of the detector and uses online template-based object model by constructing it in binary search tree using k-means.
     \newline
     As for distracters, a testing sample confidence score is computed using Normalized Cross-Correlation(NCC) between it and the closest image patch in the object model. It chooses the best candidate as the tracking result and the remaining regions trigger new distracter trackers.
@@ -97,14 +95,10 @@ This section demonstrates the tracking work by Caihua Shan.
     In unconstrained environments, the target may leave the FoV, or be completely occluded by other objects. The common trackers will simply switch to another region satisfying the threshold. Here, this tracker automatically exploits all the distracters and pays attention to them by tracking them simultaneously. Also, this tracker discovers a set of supporters to robustly identify the target among other similar regions.
 
 \subsection{Visual Tracking via Adaptive Structural Local Sparse Appearance Model}
-This section demonstrates the tracking work by Yi Shi.
-
-\subsubsection{Introduction}
 Visual Tracking via Adaptive Structural Local Sparse Appearance Model (ASLA) is one of Posters in CVPR2012 and performs favorably against several state-of-the-art methods on benchmark challenge.
 
 ASLA is an efficient methods combined with structural local sparse model and adaptive template update strategy. It samples overlapped local image patches within the target region, whose sparse coding obtained by a novel alignment-pooling method contains both spatial and partial information of the target object. This representation guarantees more accurately location and less occlusion drift. In addition, the online adaptive template strategy based on both incremental subspace learning and sparse representation is employed in coding, far more improving the performance compared by methods based on static local or holistic sparse dictionary when there is similar object in the scenes.
 
-\subsubsection{Algorithm}
 The proposed algorithm is implemented in MATLAB and runs at 1.5 frames per second on a Pentium 2.7 GHz Dual Core PC with 2GB memory.
 
 The $l_1$ minimization problem is solved with the SPAMS package and the regularization constant $\lambda$ is set to 0.01 in all experiments. For each sequence, the location of the target object is manually labeled in the first frame. We resize the target image patch to $32\times 32$ pixels and extract overlapped $16\times16$ local patches within the target region with 8 pixels as step length. As for the template update, 8 eigenvectors are used to carry out incremental subspace learning method in all experiments every 5 frames.
@@ -115,14 +109,9 @@ This section demonstrates the tracking work by Qing Ren.
 \subsubsection{Introduction}
 Tracking is a fundamental problem in computer vision, sometimes it is desirable to track an object with little prior knowledge. Almost all the methods by Tracking-by-detection, a extremely useful approach, have one thing in common, that is a sparse sampling strategy. Several samples, near the target, will be collected in every frame. For each sample, it typically characterizes a subwindow the same size as the target and most of the samples have a huge amount of overlap, causing a lot of redundancy. In order to overcome this weakness, we address a new theory. We show that the process of taking subwindows of an image indce circulant structure. Then establishing links to Fourier analysis that allows the use of the Fast Fourier Transform to quickly incorporate information from all subwindows, without iterating over them. Classification on non-linear feature spaces with the Kernel Trick can be done as efficiently as in the original image space. All running in $O(n^2 logn)$ for $n * n$ images.
 
-
 \subsection{Discrete-Continuous Optimization for Multi-Target Tracking}
-This section demonstrates the tracking work by Chuhang Zou.
-
-\subsubsection{Introduction}
 Recent approaches for multi-target tracking often use discrete optimization. However, this has the disadvantage that trajectories need to be pre-computed or represented discretely, thus limiting accuracy. In this paper, the author instead formulate multi-target tracking as a discrete-continuous optimization problem that handles each aspect in its natural domain and allows leveraging powerful methods for multi-model fitting. Data association is performed using discrete optimization with label costs, yielding near optimality. Trajectory estimation is posed as a continuous fitting problem with a simple closed-form solution, which is used in turn to update the label costs.
 
-\subsubsection{Algorithm}
 Targets are separated from the background in a preprocessing step and form a set of target hypotheses, which are then used to infer the targets¡¯ trajectories. Then algorithm then run a sliding window detector, based on SVM classification of histograms of oriented gradients (HOG) and relative optical flow (HOF). The detector yields a set of target hypotheses D.
 
 Given the set of target hypotheses D, the goal is to identify a set of target trajectories $\tau = {\tau_1,\ldots,\tau_N}$. This implies that it also need to search for a data association $f$, which for each detection $d \in D$ assigns a label $f_f \in L = {1,\ldots,N}\bigcup \emptyset$. Thereby a detection is either identified as belonging to one of the trajectories or, using the additional outlier label $\emptyset$, identified as a false alarm.
