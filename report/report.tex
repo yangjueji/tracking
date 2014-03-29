@@ -21,30 +21,37 @@
 \maketitle
 
 \begin{abstract}
-Object tracking is a such import task in computer vision that many kinds of methods are devoleped to solve this problem. Most of these methods have released their codes and datasets on the Internet. It is meaningful research to evaluate these methods with unified criteria. We will briefly introduce these algorithms and use some of the datasets from Internet to test all the algorithms on some criterion about tracking window precision.
+Object tracking is a such import task in computer vision that many kinds of methods are developed to solve this problem. Most of these methods have released their codes and datasets on the Internet. It is meaningful to evaluate these methods with unified criteria. We will briefly introduce these algorithms and then pick some datasets from Internet to test all the algorithms on some criterion to see their performance and make an advise about what kind of image sequence each algorithm is better for.
 \end{abstract}
 
 \section{Introduction}
 Object tracking is one of the core problems in a wide range of applications in computer vision, such as surveillance, human computer interaction, augmented reality, and medical imaging.
 In most areas of computer vision like scene understanding and action recognition, object tracking is regarded as an essential component.
 Object tracking problem is to estimate the position of target in video sequence given the position of the target in the first frame.
-Most algorithms perform bad when occlusion, out-of-view appear in the sequence.
+Lots of algorithms and studies have been established to solve object tracking problem in the recent years.
+But most algorithms perform bad when occlusion or out-of-view appears in the sequence.
 Therefore, we evaluate the preformance over the data sequence separately and discuss the bad cases for each algorithm.
 
-It needs lots of time 
-We colloct our data from the Internet\cite{dataset}.
-These datas contain out-of-view, occlusion, illumination variation, scale variation, deformation, motion blur, fast motion, background clutters and other factors.
+The input data of object tracking problem can be image sequence or videos.
+The predict position of the target in a frame is rectangle which can be 2 diagonal angles or 1 angle with width and height.
+It needs lots of human effort to sample images using camera and label the position of the target by our own.
+And the content of the images are not rich, most of which will be our faces.
+Thus, we colloct our data from the Internet\cite{dataset}.
+These datas contain out-of-view, occlusion, illumination variation, scale variation, deformation, motion blur, fast motion, background clutters and other factors that will cause large tracking inaccuracy which is rich enough to test these state-of-art algorithms.
+
+There are large mount of algorithms released to the public including struck\cite{struck}, deep learning track\cite{dlt}, DCMT\cite{dcmt}, ASLA\cite{asla}, TLD\cite{tld}, CXT\cite{cxt} and other state-of-art methods that perform quite well in their papers. 
+We find these methods have mainly two problems: 
+1). Overfitting on the initial frame with initial position, which will cause target missing when occlusion, out-of-plane rotation happen, but perform better in fast motion and out-of-view situations;
+2). Online traning over the sequence and overfitting the following tracked images will cause target shift when out-of-view happened.
+To test the algorithms on these two problems, we pick out some notable image sequences, and discuss the performance of each algorithm to see whether the two problems happened on them.
 
 \section{Related Work}
-In this section, we review recent algorithms for object tracking
 
 
 \section{Evaluated Algorithms}
+In this report, we investigate 6 visual tracking works and search for an appropriate evaluation criteria for those work. The algorithm details of these 6 tracking methods are listed as follow:
 
-In this report, we investigate 6 visual tracking work and search for an appropriate evaluation criteria for those work. The 6 work are studied by 6 different people and each provide a report as a summary of their progress.
-
-
-\subsection{Struck: Structured Output Tracking with Kernels}
+\subsection{struck}
 Struck\cite{struck} is different from other tracking-by-detection algorithms. Struck learns a function that directly estimates the object transformation between frames. Discriminant function $F:\mathcal{X} \times \mathcal{Y} \to \mathcal{R}$ with $X$ the sequence of images and $Y$ the possible bounding boxes transformations is used to predict:
 \[
 y_t = f(x_t^{P_{t-1}}) = \argmax_{y\in \mathcal{Y}}F(x_t^{P_{t-1}},y)
@@ -180,23 +187,35 @@ We choose ten image sequences from benchmark website\cite{dataset}. We use succe
   \label{fig:woman}
 \end{figure}
 
-Struck detects 9 frames per second with budget size of 100 and Haar feature. In these ten image sequence, truck performs not good in Soccer and SUV. Soccer image has many pieces of ribbons which has stronger effect on Haar feature than human faces. In SUV image, the SUV is occluded by trees and traffic lights, histogram of color feature is litter better than the Haar feature.
+Struck detects 9 frames per second with budget size of 100 and Haar feature.
+In these ten image sequence, truck performs not good in Soccer and SUV.
+Soccer image has many pieces of ribbons which has stronger effect on Haar feature than human faces.
+The big variance of background near the target causes bad performance.
+In SUV image, the SUV is occluded by trees and traffic lights, histogram of color feature is litter better than the Haar feature.
+SUV's visual feature is also like the background road which is a reason for detected position stuck in the road.
 
 DLT detects 4~5 frames per second. In the tiger1 and tiger2 sequence, the target is a fast moving tool with motion blur. DLT with a higher value of x and y translation can track tiger1 successfully, while lost track of tiger2 in about frame 160. In the woman sequence, the woman is severely occluded several times by the parked cars. DLT tracker fails when the woman walks close to the car at about frame 130.
 
 In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by moving or feature-similar objects, ASLA performs bad in this sequence. In the Sylvester sequence，the target is moving with illumination varying, ASLA does well in this sequence. In other sequence, it got lost in some frames but follows almost frames overall. From another respective,  though the tracker follows the target, the areas it predict has deviation compared with ground truth.
 
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|l|} \hline
+		Method & FPS\\ \hline
+		Struck & 9.3\\ \hline
+		DLT & 17.5\\ \hline
+		CXT & 15.3\\ \hline
+		ASLA & 8.5\\ \hline
+		Zou & ?.?\\ \hline
+		CSK & ?.?\\ \hline
+	\end{tabular}
+	\caption{Comparison of average running time on woman video sequences (in fps).}
+\end{table}
 
 \section{Conclusions}
-This paragraph will end the body of this sample document.
-Remember that you might still have Acknowledgments or
-Appendices; brief samples of these
-follow.  There is still the Bibliography to deal with; and
-we will make a disclaimer about that here: with the exception
-of the reference to the \LaTeX\ book, the citations in
-this paper are to articles which have nothing to
-do with the present subject and are used as
-examples only.
+Different image sequences make algorithms perform differently.
+Each algorithm has its own better situation and worse situation.
+Struck is good for slow moving objects which do not leave the view. And the target should better not have background clutters which can make the image feature significantly different.
 
 
 \begin{thebibliography}{99}
@@ -232,6 +251,19 @@ Torralba, Antonio, Robert Fergus, and William T. Freeman. 80 million tiny images
 
 \bibitem{benchmark}
 Y.Wu, J. Lim, M.H. Y. Online Object Tracking: A Benchmark. In CVPR, 2013
+
+\bibitem{asla}
+X.Jia, H.Lu. M.H Yang, Visual Tracking via Adaptive Structural Local Sparse Appearance Model, In CVPR, 2012
+
+\bibitem{tld}
+Z. Kalal, J. Matas, and K. Mikolajczyk. P-N Learning: Bootstrapping Binary Classifiers by Structural Constraints. In CVPR, 2010.
+
+\bibitem{cxt}
+T. B. Dinh, N. Vo, and G. Medioni. Context Tracker: Exploring supporters and distracters in unconstrained environments. In CVPR, 2011.
+
+\bibitem{dcmt}
+A.Andriyenko, K.Schindler, S.Roth. Discrete-Continuous Optimization for Multi-Target Tracking. CVPR 2012.
+
 
 \bibitem{dataset}
 \url{https://sites.google.com/site/trackerbenchmark/benchmarks/v10}
