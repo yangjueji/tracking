@@ -14,30 +14,20 @@
 
 \begin{document}
 
-\title{Visual Object Tracking}
+\title{Object Tracking}
 \subtitle{A Quantitative Comparison}
 \numberofauthors{6}
 \author{Chuhang Zou, Zheng Yan, Yi Shi, Qing Ren, Caihua Shan, Jueji Yang}
 \maketitle
 
 \begin{abstract}
-This paper provides a sample of a \LaTeX\ document which conforms to
-the formatting guidelines for ACM SIG Proceedings.
-It complements the document \textit{Author's Guide to Preparing
-ACM SIG Proceedings Using \LaTeX$2_\epsilon$\ and Bib\TeX}. This
-source file has been written with the intention of being
-compiled under \LaTeX$2_\epsilon$\ and BibTeX.
+Object tracking is a such import task in computer vision that many kinds of methods are devoleped to solve this problem. Most of these methods have released their codes and datasets on the Internet. It is meaningful research to evaluate these methods with unified criteria. We will briefly introduce these algorithms and use some of the datasets from Internet to test all the algorithms on some criterion about tracking window precision.
 \end{abstract}
 
-
 \section{Introduction}
-
-Object tracking is one of the most important components in a wide range of applications in computer vision, such as surveillance, human computer interaction, and medical imaging.
-
+Object tracking is one of the core problems in a wide range of applications in computer vision, such as surveillance, human computer interaction, augmented reality, and medical imaging. In most areas of computer vision like scene understanding and action recognition, object tracking is regarded as an essential component. Object tracking problem is to estimate the position of target in video sequence given the position of the target in the first frame. Most algorithms perform bad when occlusion, out-of-view appear in the sequence.
 
 \section{Related Work}
-
-In this section, we review recent algorithms for object tracking
 
 
 \section{Evaluated Algorithms}
@@ -67,11 +57,6 @@ $\delta\Phi_i(y)=\Phi(x_i, y_i) - \Phi(x_i, y)$. This optimization aims to ensur
 
 The paper optimize the dual form of the optimization which will not be listed here in detail. $\Phi(x,y)$ only appears in inner products in the dual form of this optimization. So a joint kernel function $k(x,y,\bar{x},\bar{y}) = \langle \Phi(x,y), \Phi(\bar{x},\bar{y})\rangle$ is used which is the kernel between features(Haar, Histogram) of cropped boxes of images. And SMO-style step is also used to optimize the dual secondary convex optimization.
 
-\subsubsection{Evaluation}
-The average overlap between estimated and ground truth throughout each sequence is used to measure the performance between this algorithm and other state-of-art algorithms in this paper.
-The speed of this algorithm is from 12.1FPS to 21.4FPS as reported.
-
-
 \subsection{The Deep Learning Tracker}
 This section demonstrates the tracking work by Zheng Yan.
 
@@ -95,11 +80,6 @@ The overall network architecture is shown in Fig.~\ref{fig:dlt}(c).
     \end{figure}
 \end{center}
 
-\subsubsection{Evaluation}
-
-The author empirically compare DLT with 7 state-of-the-art trackers using 10 challenging benchmark video sequences. They use two common performance metrics for quantitative comparison: success rate and central-pixel error. They also report the central-pixel errors over all frames for each video sequence and list the running time of each sequence in detail.
-
-
 \subsection{Context Tracker: Exploring Supporters and Distracters in Unconstrained Environments}
 This section demonstrates the tracking work by Caihua Shan.
 
@@ -115,14 +95,6 @@ This section demonstrates the tracking work by Caihua Shan.
     \newline
     In unconstrained environments, the target may leave the FoV, or be completely occluded by other objects. The common trackers will simply switch to another region satisfying the threshold. Here, this tracker automatically exploits all the distracters and pays attention to them by tracking them simultaneously. Also, this tracker discovers a set of supporters to robustly identify the target among other similar regions.
 
-\subsubsection{Experiments}
-    To show the performance of the tracker, the experiments are carried out in two different setups: one is to evaluate the contribution of context in the tracker, and the other is to compare with various state-of-the-art methods.
-    \newline
-    To emphasize the contribution of context in terms of distracters and supporters, the paper chooses two very challenging sequences which contains similar objects moving:  \textit{Multiplefaces}, and  \textit{Babies}. These sequences include several challenges such as out of plane rotation, total occlusion, target leaving FoV.
-    \newline
-    To demonstrate the performance of context tracker the paper uses several recent state-of-the-art methods for comparison including: \textit{FragTracker (FT), MILTracker (MILT), Cotraining Tracker (CoTT), PNTracker, DNBSTracker (DNBST)} and \textit{VTDTracker}. The chosen data sets contain occlusion, object leaving FoV, very cluttered background, abrupt motion and motion blur. Several of them are recorded in unconstrained environments. The metric used in the experiment is the average center location error. It notes the frame number where a tracker starts to lose the object and then gets the right target in several frames before reacquisition happens. This metric balances the difference of initial bounding box.
-
-
 \subsection{Visual Tracking via Adaptive Structural Local Sparse Appearance Model}
 This section demonstrates the tracking work by Yi Shi.
 
@@ -135,14 +107,6 @@ ASLA is an efficient methods combined with structural local sparse model and ada
 The proposed algorithm is implemented in MATLAB and runs at 1.5 frames per second on a Pentium 2.7 GHz Dual Core PC with 2GB memory.
 
 The $l_1$ minimization problem is solved with the SPAMS package and the regularization constant $\lambda$ is set to 0.01 in all experiments. For each sequence, the location of the target object is manually labeled in the first frame. We resize the target image patch to $32\times 32$ pixels and extract overlapped $16\times16$ local patches within the target region with 8 pixels as step length. As for the template update, 8 eigenvectors are used to carry out incremental subspace learning method in all experiments every 5 frames.
-
-\subsubsection{Experiments}
-\label{sec:asla_section}
-Nine challenging sequences from prior work \cite{shi1,shi2,shi3,shi4,shi5}, the CAVIAR data set \footnote{http://groups.inf.ed.ac.uk/vision/CAVIAR/CAVIARDATA1/} and our own experiment its performance. The challenges of these videos include illumination variation, partial occlusion, pose variation, background clutter and scale change. Six state-of-the-art tracking methods including incremental visual tracking (IVT) method [4], fragment-based (FragTrack) tracking method \cite{shi1}, $l_1$ tracker ($l_1$) \cite{shi6}, multiple instance learning (MIL) tracker \cite{shi2}, visual tracking decomposition (VTD) method \cite{shi3} and P-N learning (PN) tracker. \cite{shi7}
-
-Both quantitative and qualitative evaluation show its robust and favorable result. The former includes 1) average center location errors in pixels, 2)
-success rate score = area($R_T \bigcap R_G$)$/$area($R_T \bigcup R_G$), given the tracking result $R_T$ and ground truth $R_U$, 3) relative position errors (in pixels) between the center and the tracking results. The latter includes sensed results under 1) occlusion, 2) illumination-change and 3) background-clutter condition.
-
 
 \subsection{Context Tracker: Exploring Supporters and Distracters in Unconstrained Environments}
 This section demonstrates the tracking work by Qing Ren.
@@ -162,19 +126,6 @@ Targets are separated from the background in a preprocessing step and form a set
 
 Given the set of target hypotheses D, the goal is to identify a set of target trajectories $\tau = {\tau_1,\ldots,\tau_N}$. This implies that it also need to search for a data association $f$, which for each detection $d \in D$ assigns a label $f_f \in L = {1,\ldots,N}\bigcup \emptyset$. Thereby a detection is either identified as belonging to one of the trajectories or, using the additional outlier label $\emptyset$, identified as a false alarm.
 The eventual aim is to perform multi-target tracking by minimizing a joint energy $E(\tau , f)$ w.r.t. the trajectories $\tau$ and the data association $f$. 
-
-\subsubsection{Experiments}
-
-\begin{itemize}
-\item CLEAR MOT metrics
-
-For the quantitative evaluation, the author applies the widely used CLEAR MOT metrics The Multi-Object Tracking Accuracy (MOTA) combines all errors (missed targets, false alarms, identity switches) into one number, normalized to the range 0..100 \%. A match between the tracker output and the ground truth is defined as >50\% intersection-over-union of their bounding boxes. The related Multi-Object Detection Accuracy (MODA) only checks for missed targets and false alarms, but does not penalize trajectories switching from one target to another. The Multi-Object Tracking Precision (MOTP) averages the bounding box overlap over all tracked targets as a measure of localization accuracy, whereas the closely related MODP averages the overlap over all frames.
-
-\item Multi-target tracking evaluation tool
-
-This is a automatic tracking evaluation tool online \footnote{http://iris.usc.edu/people/yangbo/downloads.html}. The evaluation tool will provide detection recall, detection precision, number of ground truth detections, number of correct detections, number of false detections, number of total detections, number of total tracks in ground truth, number of generated tracks, proportion of mostly tracked, partly tracked, and mostly lost trajectories, number of fragments, and number of id switches.
-\end{itemize}
-
 
 \section{Experiments}
 We choose ten image sequences from benchmark website\cite{dataset}. We use success rate score = area($R_T \bigcap R_G$)$/$area($R_T \bigcup R_G$) which is described both in Section ~\ref{sec:asla_section} and others tests\cite{benchmark}. And then calculate the percentage of frames that has a score bigger than Overlap threshold showed in Fig.~\ref{fig:soccer}.
