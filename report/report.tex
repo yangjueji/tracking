@@ -166,11 +166,13 @@ SUV's visual feature is also like the background road which is a reason for dete
 CXT did a good job in the dataset of Suv, Sylvester and Trellis. CXT did ok in the dataset of Tiger1, Tiger2, Subway, Walking1 and Walking2. CXT perform badly in the dataset of Soccer and Women.
 
 As far as ASLA alone considered, it performs best in Walking and Subway, well in Suv and Sylvester, badly in Soccer, Walking2, Women and 2 Tiger Sequences. 
-In our explanation, because of it’s method based on structural local sparse appearance model and alignment pooling, it can locate the target more accurate and handle occlusion. 
+In our explanation, because of it's method based on structural local sparse appearance model and alignment pooling, it can locate the target more accurate and handle occlusion. 
 
 We analysis the performance of each algorithms in detail in the following sections. Each algorithms picks up various crucial sequences to analysis how the algorithm performs in that situation.
 
 \subsubsection{Soccer}
+
+
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{soccer}
@@ -202,7 +204,7 @@ We analysis the performance of each algorithms in detail in the following sectio
 
 \textbf{CXT.} In this sequence and sylvester sequence, tt shows that when the target is partially or fully occluded or some portion of the target leaves the view, CXT can find the target correctly. Since CXT uses the Supports which are local key-points around the object having motion correlation with the target in a short time span, CXT can find the location of target more precisely.
 
-\text{ALSA.} The results in Suv and Sylvester suggest that structured learning and local sparse representations, adopted by ASLA, are effective in dealing with occlusions (OCC).
+\textbf{ALSA.} The results in Suv and Sylvester suggest that structured learning and local sparse representations, adopted by ASLA, are effective in dealing with occlusions (OCC).
 
 \subsubsection{Sylvester}
 
@@ -216,7 +218,7 @@ We analysis the performance of each algorithms in detail in the following sectio
 
 \subsubsection{Tiger1}
 
-In the tiger1 sequence, the target is a fast moving tool with motion blur.
+In the tiger1 sequence, the target is a fast moving toy with motion blur.
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{tiger1}
@@ -224,11 +226,13 @@ In the tiger1 sequence, the target is a fast moving tool with motion blur.
     \label{fig:tiger1}
 \end{figure}
 
-\textbf{CXT} It shows that when the motion of the ground truth is fast and the target has a deformation, CXT can't detect the target. Because the condition changes dramatically, Supports and Distracters can't be calculated precisely. And they might not do well in detecting the deformation.
+\textbf{CXT.} It shows that when the motion of the ground truth is fast and the target has a deformation, CXT can't detect the target. Because the condition changes dramatically, Supports and Distracters can't be calculated precisely. And they might not do well in detecting the deformation.
 
-\textbf{DLT} DLT with a higher value of x and y translation can track tiger1 successfully.
+\textbf{DLT.} DLT with a higher value of x and y translation can track tiger1 successfully.
 
 \subsubsection{Tiger2}
+
+In the tiger1 sequence, the target is a fast moving toy with motion blur.
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{tiger2}
@@ -241,6 +245,8 @@ In the tiger1 sequence, the target is a fast moving tool with motion blur.
 \textbf{DLT} DLT with a higher value of x and y translation can track tiger1 successfully, while lost track of tiger2 in about frame 160. In the woman sequence, the woman is severely occluded several times by the parked cars. DLT tracker fails when the woman walks close to the car at about frame 130.
 
 \subsubsection{Trellis}
+
+In the trellis sequence, each tracker has to track a face in outdoor environments with a abrupt change of motion.
 
 \begin{figure}[hbt]
     \includegraphics[width=200pt]{trellis}
@@ -272,7 +278,7 @@ In the tiger1 sequence, the target is a fast moving tool with motion blur.
     \label{fig:walking2}
 \end{figure}
 
-\textbf{CXT} It shows that Low Resolution might influence the detection. Since low resolution and occlusion, it will be hard to find appropriate Supports to find the target.
+\textbf{CXT.} It shows that Low Resolution might influence the detection. Since low resolution and occlusion, it will be hard to find appropriate Supports to find the target.
 
 \subsubsection{Woman}
 
@@ -284,9 +290,9 @@ In the woman sequence, the woman is severely occluded several times by the parke
   \label{fig:woman}
 \end{figure}
 
-\textbf{CXT} The combination of Deformation, Motion Blur and Fast Motion make detection harder. The Supports and Distracters don't work better in these factors. Fast Motion makes it hard to detect the local key-points around the object having motion correlation with the target in a short time span. Deformation and Motion Blur seriously affects to find the target.
+\textbf{CXT.} The combination of Deformation, Motion Blur and Fast Motion make detection harder. The Supports and Distracters don't work better in these factors. Fast Motion makes it hard to detect the local key-points around the object having motion correlation with the target in a short time span. Deformation and Motion Blur seriously affects to find the target.
 
-\textbf{DLT} DLT tracker fails when the woman walks close to the car and the camera is rolling in. A dramatically change both of scale and occlusion is really hard to handle.
+\textbf{DLT.} DLT tracker fails when the woman walks close to the car and the camera is rolling in. A dramatically change both of scale and occlusion is really hard to handle.
 
 \subsection{Speed Analysis}
 
@@ -298,7 +304,7 @@ In the woman sequence, the woman is severely occluded several times by the parke
 		DLT & C \& MATLAB & 17.0\\ \hline
 		CXT & C \& MATLAB & 15.3\\ \hline
 		ASLA & C \& MATLAB & 8.5\\ \hline
-		DCMT & ? & ?.?\\ \hline
+		DCMT & C \& MATLAB & ?.?\\ \hline
 		TLD & C \& MATLAB & 13.2\\ \hline
 	\end{tabular}
 	\caption{Comparison of average running time on 10 video sequences (in fps).}
