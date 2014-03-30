@@ -46,6 +46,8 @@ To test the algorithms on these two problems, we pick out some notable image seq
 
 \section{Related Work}
 
+In this section, we review recent algorithms related to the six methods we chosen. These methods are based on quite different modules so there is much related work.  Due to limitations on space, we just choose the important based work of each method.DCMT uses mixed discrete-continuous formulation to describe the situation: data association between target detections and trajectories is kept discrete, nonetheless trajectory fitting is performed in the continuous domain. In contrast to previous discrete-continuous approaches based on Markov Chain Monte Carlo (MCMC) sampling\cite{dcmt_14,dcmt_19}, the data association continues to be amenable to well-established discrete optimization techniques for labeling problems, such as graph cuts\cite{dcmt_5,dcmt_16} and (tree-reweighted) belief propagation\cite{dcmt_15}.DLT attempts to combine the philosophies behind both generative and discriminative trackers by developing a robust discriminative tracker which uses an effective image representation learned automatically. Some popular generative trackers include incremental visual tracking (IVT), which represents the tracked object based on principal component analysis (PCA), and the l1 tracker (L1T). Some representative trackers in this category are the online AdaBoost (OAB) tracker, multiple instance learning (MIL) tracker, and structured output tracker. ASLA bears some similarity to \cite{asla_11} in the use of local sparse representations. However, it samples larger overlapped local image patches with fixed spatial layout where there are more spatial structural information in them. CXT builds on P-N learning\cite{cxt_16}. Basically it inherits the power of tracking-learning-detection (TLD) \cite{cxt_15} framework while focusing on exploring the structure of unlabeled data. To address the issue that it's vulnerable to switching to another similar object, it proposes to employ the tracking-learning-detection concept of this tracker to not only explore the structure of positive and negative data but also the more semantic data: Distracters and Supporters.Struck makes use of the structured output SVM framework of \cite{struck_18} because of this flexibility of SVMs and their natural generalization to structured output spaces. In particular, we extend the online structured output SVM learning method proposed in \cite{struck_5, struck_6} and adapt it to the tracking problem.
+
 
 \section{Evaluated Algorithms}
 In this report, we investigate 6 visual tracking works and search for an appropriate evaluation criteria for those work. The algorithm details of these 6 tracking methods are listed as follow:
@@ -300,6 +302,31 @@ T. B. Dinh, N. Vo, and G. Medioni. Context Tracker: Exploring supporters and dis
 \bibitem{dcmt}
 A.Andriyenko, K.Schindler, S.Roth. Discrete-Continuous Optimization for Multi-Target Tracking. CVPR 2012.
 
+\bibitem{dcmt_5}
+Y. Boykov, O. Veksler, and R. Zabih. Fast approximate energy minimization via graph cuts. PAMI, 23(11), 2001
+
+\bibitem{dcmt_15}V. Kolmogorov. Convergent tree-reweighted message passing for energy minimization. PAMI, 28(10), 2006.
+
+\bibitem{dcmt_16}V. Kolmogorov and R. Zabih. What energy functions can be minimized via graph cuts? PAMI, 26(2), 2004
+
+\bibitem{dcmt_14}Z. Khan, T. Balch, and F. Dellaert. MCMC data association and sparse factorization updating for real time multitarget tracking with merged and multiple measurements. PAMI’06.
+
+\bibitem{dcmt_19}S. Oh, S. Russell, and S. Sastry. Markov chain Monte Carlo data association for general multiple-target tracking problems. IEEE Conference on Decision and Control, 2004.
+
+\bibitem{asla_11}
+B. Liu, J. Huang, L. Yang, and C. A. Kulikowski. Robust tracking using local sarse appearance model and k-selection. In CVPR, 2011.
+
+\bibitem{cxt_16}
+Z. Kalal, J. Matas, and K. Mikolajczyk. P-N learning: Bootstrapping binary classifiers by structural constraints. In CVPR, pages 49–56, 2010.
+
+\bibitem{cxt_15}Z. Kalal, J. Matas, and K. Mikolajczyk. Online learning of robust object detectors during unstable tracking. In OLCV, pages 1417–1424, 2009.
+
+\bibitem{struck_18}
+I. Tsochantaridis, T. Joachims, T. Hofmann, and Y. Altun. Large Margin Methods for Structured and Interdependent Output Variables. JMLR, 6:1453–1484, Dec. 2005.
+
+\bibitem{struck_5}A. Bordes, L. Bottou, P. Gallinari, and J. Weston. Solving multiclass support vector machines with LaRank. In Proc. ICML, 2007. 2, 4
+
+\bibitem{struck_6}A. Bordes, N. Usunier, and L. Bottou. Sequence Labelling SVMs Trained in One Pass. In Proc. ECML-PKDD, 2008. 2, 4, 5
 
 \bibitem{dataset}
 \url{https://sites.google.com/site/trackerbenchmark/benchmarks/v10}
