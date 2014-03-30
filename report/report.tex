@@ -184,6 +184,8 @@ We analysis the performance of each algorithms in detail in the following sectio
 
 \subsubsection{Soccer}
 
+In the soccer sequence, the target is the face of a football player, during the tracking process, the face is severely occluded for a long time by other players.
+
 \begin{figure}[hbt]
 	\centering
     \includegraphics[width=200pt]{soccer}
@@ -201,7 +203,10 @@ Soccer image has many pieces of ribbons which has stronger effect on Haar featur
     \caption{Struck algorithm test on the soccer sequence, the backgourd has much more significant visual features than the player's face.}
     \label{fig:struck_soccer}
 \end{figure}
+
 \subsubsection{Subway}
+
+In the subway sequence, the target is a walking man. The man is severely occluded several time by other walker in different direction.
 
 \begin{figure}[hbt]
 	\centering
@@ -215,6 +220,8 @@ Soccer image has many pieces of ribbons which has stronger effect on Haar featur
 \textbf{ALSA.} Because the tracker uses affine motion models, it handles well in scale variation (SV). That’s the explanation why ASLA performs best in Walking and Subway. 
 
 \subsubsection{Suv}
+
+In the suv sequence, the target is a moving SUV car. The car move out of the camera at the 27th frame. After that, the car is severely occluded by trees several times.
 
 \begin{figure}[hbt]
 	\centering
@@ -247,6 +254,8 @@ SUV's visual feature is also like the background road which is a reason for dete
 \end{figure}
 
 \subsubsection{Sylvester}
+
+In the sylvester sequence, the target is a toy under a light. The toy moves and rotates fast with illumination changes. After that, the car is severely occluded by trees several times.
 
 \begin{figure}[hbt]
 	\centering
@@ -282,7 +291,7 @@ In the tiger1 sequence, the target is a fast moving toy with motion blur.
 
 \subsubsection{Tiger2}
 
-In the tiger1 sequence, the target is a fast moving toy with motion blur.
+In the tiger2 sequence, the target is a fast moving toy with motion blur. The toy is severely occluded by plants several times.
 
 \begin{figure}[hbt]
 	\centering
@@ -310,6 +319,8 @@ In the trellis sequence, each tracker has to track a face in outdoor environment
 
 \subsubsection{Walking}
 
+In the walking sequence, each tracker has to track a pedestrian in outdoor environments in a street with scale variation.
+
 \begin{figure}[hbt]
 	\centering
     \includegraphics[width=200pt]{walking}
@@ -322,6 +333,8 @@ In the trellis sequence, each tracker has to track a face in outdoor environment
 \textbf{ALSA.} While comparing the result in Walking with in Walking2, the tracker behaviors differently. We analysis that ASLA always fails in subset with some frames where the target is fully or partially obstruct by the similar. 
 
 \subsubsection{Walking2}
+
+In the walking2 sequence, each tracker has to track a pedestrian in indoor environments. The object is severely occluded by another pedestrian.
 
 \begin{figure}[hbt]
     \centering
