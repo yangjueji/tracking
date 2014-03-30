@@ -38,7 +38,7 @@ And the content of the images are not rich, most of which will be our faces.
 Thus, we collect our data from the Internet\cite{dataset}.
 These datas contain out-of-view, occlusion, illumination variation, scale variation, deformation, motion blur, fast motion, background clutters and other factors that will cause large tracking inaccuracy which is rich enough to test these state-of-art algorithms.
 
-There are large mount of algorithms released to the public including Struck\cite{struck}, deep learning track\cite{dlt}, DCMT\cite{dcmt}, ASLA\cite{asla}, TLD\cite{tld}, CXT\cite{cxt} and other state-of-art methods that perform quite well in their papers. 
+There are large mount of algorithms released to the public including Struck\cite{struck}, deep learning track\cite{dlt}, DFT\cite{dcmt}, ASLA\cite{asla}, TLD\cite{tld}, CXT\cite{cxt} and other state-of-art methods that perform quite well in their papers. 
 We find these methods have mainly two problems: 
 1). Overfitting on the initial frame with initial position, which will cause target missing when occlusion, out-of-plane rotation happen, but perform better in fast motion and out-of-view situations;
 2). Online training over the sequence and overfitting the following tracked images will cause target shift when out-of-view happened.
@@ -49,7 +49,7 @@ In this section, we review recent algorithms related to the six methods we chose
 These methods are based on quite different modules so there is much related work.
 Due to limitations on space, we just choose the important based work of each method.
 
-DCMT uses mixed discrete-continuous formulation to describe the situation: data association between target detections and trajectories is kept discrete, nonetheless trajectory ﬁtting is performed in the continuous domain.
+DFT uses mixed discrete-continuous formulation to describe the situation: data association between target detections and trajectories is kept discrete, nonetheless trajectory ﬁtting is performed in the continuous domain.
 In contrast to previous discrete-continuous approaches based on Markov Chain Monte Carlo (MCMC) sampling\cite{rw4}\cite{rw5}, the data association continues to be amenable to well-established discrete optimization techniques for labeling problems, such as graph cuts\cite{rw2}\cite{rw3} and (tree-reweighted) belief propagation\cite{rw1}.
 
 DLT attempts to combine the philosophies behind both generative and discriminative trackers by developing a robust discriminative tracker which uses an effective image representation learned automatically.
@@ -64,7 +64,7 @@ Basically it inherits the power of tracking-learning-detection (TLD)\cite{rw8} f
 To address the issue that it's vulnerable to switching to another similar object, it proposes to employ the tracking-learning-detection concept of this tracker to not only explore the structure of positive and negative data but also the more semantic data: Distracters and Supporters.
 
 Struck makes use of the structured output SVM framework of\cite{rw9} because of this flexibility of SVMs and their natural generalization to structured output spaces.
-In particular, we extend the online structured output SVM learning method proposed in\cite{cw10}\cite{cw11} and adapt it to the tracking problem.
+In particular, we extend the online structured output SVM learning method proposed in\cite{rw10}\cite{rw11} and adapt it to the tracking problem.
 
 \section{Evaluated Algorithms}
 In this report, we investigate 6 visual tracking works and search for an appropriate evaluation criteria for those work. The algorithm details of these 6 tracking methods are listed as follow:
@@ -138,14 +138,9 @@ The availability of a small number of labeled examples and a large number of str
 
 The contribution of the TLD is a formalization of the P-N learning paradigm for off-line and on-line learning problems. TLD is processing the video sequence in real-time and the resulting detector achieves state-of-the-art performance.
 
-\subsection{Discrete-Continuous Optimization for Multi-Target Tracking}
-Recent approaches for multi-target tracking often use discrete optimization. However, this has the disadvantage that trajectories need to be pre-computed or represented discretely, thus limiting accuracy. In this paper, the author instead formulate multi-target tracking as a discrete-continuous optimization problem that handles each aspect in its natural domain and allows leveraging powerful methods for multi-model fitting. Data association is performed using discrete optimization with label costs, yielding near optimality. Trajectory estimation is posed as a continuous fitting problem with a simple closed-form solution, which is used in turn to update the label costs.
-
-Targets are separated from the background in a preprocessing step and form a set of target hypotheses, which are then used to infer the targets¡¯ trajectories. Then algorithm then run a sliding window detector, based on SVM classification of histograms of oriented gradients (HOG) and relative optical flow (HOF). The detector yields a set of target hypotheses D.
-
-Given the set of target hypotheses D, the goal is to identify a set of target trajectories $\tau = {\tau_1,\ldots,\tau_N}$. This implies that it also need to search for a data association $f$, which for each detection $d \in D$ assigns a label $f_f \in L = {1,\ldots,N}\bigcup \emptyset$. Thereby a detection is either identified as belonging to one of the trajectories or, using the additional outlier label $\emptyset$, identified as a false alarm.
-The eventual aim is to perform multi-target tracking by minimizing a joint energy $E(\tau , f)$ w.r.t. the trajectories $\tau$ and the data association $f$. 
-
+\subsection{Distribution Fields for Tracking}
+Visual tracking of general objects often relies on the assumption that gradient descent of the
+alignment function will reach the global optimum. A common technique to smooth the objective function is to blur the image. However, blurring the image destroys image information, which can cause the target to be lost. To address this problem the author introduce a method for building an image descriptor using distribution fields (DFs), a representation that allows smoothing the objective function without destroying information about pixel values. They present experimental evidence on the superiority of the width of the basin of attraction around the global optimum of DFs over other descriptors. DFs also allow the representation of uncertainty about the tracked object. This helps in disregarding outliers during tracking (like occlusions or small misalignments) without modeling them explicitly.
 
 \section{Evaluation Criterion}
 
@@ -174,22 +169,20 @@ The performance in each sequence for all the trackers is summarized by the succe
 
 Struck detects 9 frames per second with budget size of 100 and Haar feature.
 In these ten image sequence, truck performs not good in Soccer and SUV.
-Soccer image has many pieces of ribbons which has stronger effect on Haar feature than human faces.
-The big variance of background near the target causes bad performance.
-In SUV image, the SUV is occluded by trees and traffic lights, histogram of color feature is litter better than the Haar feature.
-SUV's visual feature is also like the background road which is a reason for detected position stuck in the road.
-
+In other image sequences, the struck algorithm performs quite well.
 
 CXT did a good job in the dataset of Suv, Sylvester and Trellis. CXT did ok in the dataset of Tiger1, Tiger2, Subway, Walking1 and Walking2. CXT perform badly in the dataset of Soccer and Women.
 
 As far as ASLA alone considered, it performs best in Walking and Subway, well in Suv and Sylvester, badly in Soccer, Walking2, Women and 2 Tiger Sequences. 
 In our explanation, because of it's method based on structural local sparse appearance model and alignment pooling, it can locate the target more accurate and handle occlusion. 
 
+The advantages of DFT are those: 1) allow the representation of uncertainty about the tracked object, and 2) easy and convenient in implementation. 
+The disadvantages of this algorithm lie mainly in the accuracy of the tracking results, which could be intuitively seen in the comparison results of all the algorithms.
+The same size of tracking window will obviously affect the result when objects in videos are changing size.
+
 We analysis the performance of each algorithms in detail in the following sections. Each algorithms picks up various crucial sequences to analysis how the algorithm performs in that situation.
 
 \subsubsection{Soccer}
-
-
 
 \begin{figure}[hbt]
 	\centering
@@ -200,6 +193,14 @@ We analysis the performance of each algorithms in detail in the following sectio
 
 \textbf{CXT.} In this dataset, since the direction of person's face turned around and the condition surrounding the face changed dramatically, Supporters can't help to verify the location of the target. As for distracters, in the end of data there are many faces and the target is missing, so it's hard to find the right face.
 
+\textbf{Struck.}
+Soccer image has many pieces of ribbons which has stronger effect on Haar feature than human faces.~\ref{fig:struck_soccer}
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[width=140pt]{struck_soccer}
+    \caption{Struck algorithm test on the soccer sequence, the backgourd has much more significant visual features than the player's face.}
+    \label{fig:struck_soccer}
+\end{figure}
 \subsubsection{Subway}
 
 \begin{figure}[hbt]
@@ -224,7 +225,26 @@ We analysis the performance of each algorithms in detail in the following sectio
 
 \textbf{CXT.} In this sequence and sylvester sequence, tt shows that when the target is partially or fully occluded or some portion of the target leaves the view, CXT can find the target correctly. Since CXT uses the Supports which are local key-points around the object having motion correlation with the target in a short time span, CXT can find the location of target more precisely.
 
-\textbf{ALSA.} The results in Suv and Sylvester suggest that structured learning and local sparse representations, adopted by ASLA, are effective in dealing with occlusions (OCC).
+\textbf{ALSA.} The result in Suv suggests that structured learning and local sparse representations, adopted by ASLA, are effective in dealing with occlusions (OCC).
+
+\textbf{Struck.} In SUV image, the SUV is occluded by trees and traffic lights, histogram of color feature is litter better than the Haar feature.
+SUV's visual feature is also like the background road which is a reason for detected position stuck in the road.See Fig~\ref{fig:struck_suv}
+
+\textbf{DFT.} The tracking window gradually diverges from the actual object: the suv car, since the occlusions of the car appears. See Fig~\ref{fig:dft_suv}
+
+\begin{figure}[hbt]
+	\centering
+    \includegraphics[width=140pt]{struck_suv}
+    \caption{Struck algorithm test on the suv sequence. The tree has much more significant visual features than the suv on the left.}
+    \label{fig:struck_suv}
+\end{figure}
+
+\begin{figure}[hbt]
+	\centering
+    \includegraphics[width=140pt]{dft_suv}
+    \caption{DFT algorithm test on the suv sequence. When suv leave the view, the predict bounding box will stay beside, which makes the right half of the box effects the tracker. The result becomes further worse when the time goes on, since more and more useless object are included in the window. Other algorithms like struck has the same situation.}
+    \label{fig:dft_suv}
+\end{figure}
 
 \subsubsection{Sylvester}
 
@@ -236,6 +256,14 @@ We analysis the performance of each algorithms in detail in the following sectio
 \end{figure}
 
 \textbf{CXT.} It shows that illumination variation, in-plane rotation and out-of-plane rotation don't matter detection acutely. The reason might be Supports and Distracters that give more evidences to find the target and eliminate the wrong object.
+
+\textbf{DFT.} We could learn that the window size will also diverge when be confronted with rotations, where the human change the orientations of the head of the toy dog.~\ref{fig:dtf_sylvester}
+\begin{figure}[hbt]
+	\centering
+    \includegraphics[width=140pt]{dtf_sylvester}
+    \caption{DFT algorithm test on the suv sequence.}
+    \label{fig:dtf_sylvester}
+\end{figure}
 
 \subsubsection{Tiger1}
 
@@ -280,8 +308,6 @@ In the trellis sequence, each tracker has to track a face in outdoor environment
 
 \textbf{CXT.} In this sequence and trellis, it shows that illumination variation, in-plane rotation and out-of-plane rotation don't matter detection acutely. The reason might be Supports and Distracters that give more evidences to find the target and eliminate the wrong object.
 
-\textbf{DLT.}
-
 \subsubsection{Walking}
 
 \begin{figure}[hbt]
@@ -319,73 +345,6 @@ In the woman sequence, the woman is severely occluded several times by the parke
 
 \textbf{CXT.} The combination of Deformation, Motion Blur and Fast Motion make detection harder. The Supports and Distracters don't work better in these factors. Fast Motion makes it hard to detect the local key-points around the object having motion correlation with the target in a short time span. Deformation and Motion Blur seriously affects to find the target.
 
-Struck detects 9 frames per second with budget size of 100 and Haar feature.
-In these ten image sequence, truck performs not good in Soccer and SUV.
-Soccer image has many pieces of ribbons which has stronger effect on Haar feature than human faces.~\ref{fig:struck_soccer}
-
-\begin{figure}[hbt]
-    \centering
-    \includegraphics[width=140pt]{struck_soccer}
-    \caption{Struck algorithm test on the soccer sequence, the backgourd has much more significant visual features than the player's face.}
-    \label{fig:struck_soccer}
-\end{figure}
-
-The big variance of background near the target causes bad performance.
-In SUV image, the SUV is occluded by trees and traffic lights, histogram of color feature is litter better than the Haar feature.
-SUV's visual feature is also like the background road which is a reason for detected position stuck in the road.~\ref{fig:struck_suv} ~\ref{fig:struck_suv_out_of_view}
-
-\begin{figure}[hbt]
-	\centering
-    \includegraphics[width=140pt]{struck_suv}
-    \caption{Struck algorithm test on the suv sequence. The tree has much more significant visual features than the suv on the left.}
-    \label{fig:struck_suv}
-\end{figure}
-
-\begin{figure}[hbt]
-	\centering
-    \includegraphics[width=140pt]{struck_suv_out_of_view}
-    \caption{Struck algorithm test on the suv sequence. When suv leave the view, the predict bounding box will stay beside, which makes the right half of the box effects the tracker.}
-    \label{fig:struck_suv_out_of_view}
-\end{figure}
-
-In other image sequences, the struck algorithm performs quite well.
-
-DLT detects 4~5 frames per second.
-In the tiger1 and tiger2 sequence, the target is a fast moving tool with motion blur.
-DLT with a higher value of x and y translation can track tiger1 successfully, while lost track of tiger2 in about frame 160. In the woman sequence, the woman is severely occluded several times by the parked cars. DLT tracker fails when the woman walks close to the car at about frame 130.
-
-As far as ASLA alone considered, it performs best in Walking and Subway, well in Suv and Sylvester, badly in Soccer, Walking2, Women and 2 Tiger Sequences. 
-In our explanation, because of it’s method based on structural local sparse appearance model and alignment pooling, it can locate the target more accurate and handle occlusion. 
-The results in Sylvester and Suv suggest that structured learning and local sparse representations, adopted by ASLA, are effective in dealing with occlusions ( OCC ).
-In addition, because the tracker uses affine motion models, it handles well in scale variation ( SV ).
-That’s the explanation why ASLA performs best in Walking and Subway. While comparing the result in Walking with in Walking2, the tracker behaviors differently.
-We analysis that ASLA always fails in subset with some frames where the target is fully or partially obstruct by the similar.
-The same situation are in Woman and Trellis. When an object moves fast，as results of 2 Tiger subsets show, the tracker does not perform well in this subset due to the poor dynamic model.
-Also is notedly that in the experiment, we adopt the the given codes by ASLA( almost similar with the one shared by benchmark) without tuning.
-But some results disagree with the results in original paper.
-But we prefer to believe that if is allowed to tune parameters, the results would be better.
-
-CXT did a good job in the dataset of Suv, Sylvester and Trellis.
-Suv shows that when the target is partially or fully occluded or some portion of the target leaves the view, CXT can find the target correctly.
-Since CXT uses the Supports which are local key-points around the object having motion correlation with the target in a short time span, CXT can find the location of target more precisely.
-Sylvester and Trellis show that illumination variation, in-plane rotation and out-of-plane rotation don't matter detection acutely.
-The reason might be Supports and Distracters that give more evidences to find the target and eliminate the wrong object.
-CXT did ok in the dataset of Tiger1, Tiger2, Subway, Walking1 and Walking2.
-Tiger1 and Tiger2 show that when the motion of the ground truth is fast and the target has a deformation, CXT can't detect the target.
-Because the condition changes dramatically, Supports and Distracters can't be calculated precisely.
-And they might not do well in detecting the deformation.
-Subway and Walking1 show that Supports and Distracters don't do well in detecting the deformation.
-Walking2 shows that Low Resolution might influence the detection. Since low resolution and occlusion, it will be hard to find appropriate Supports to find the target.
-CXT perform badly in the dataset of Soccer and Women.
-In Women, the combination of Deformation, Motion Blur and Fast Motion make detection harder.
-The Supports and Distracters don't work better in these factors.
-Fast Motion makes it hard to detect the local key-points around the object having motion correlation with the target in a short time span.
-Deformation and Motion Blur seriously affects to find the target.
-In Soccer, since the direction of person's face turned around and the condition surrounding the face changed dramatically, Supporters can't help to verify the location of the target.
-As for distracters, in the end of data there are many faces and the target is missing, so it's hard to find the right face.
-
-\textbf{CXT} The combination of Deformation, Motion Blur and Fast Motion make detection harder. The Supports and Distracters don't work better in these factors. Fast Motion makes it hard to detect the local key-points around the object having motion correlation with the target in a short time span. Deformation and Motion Blur seriously affects to find the target.
-
 \textbf{DLT.} DLT tracker fails when the woman walks close to the car and the camera is rolling in. A dramatically change both of scale and occlusion is really hard to handle.
 
 \subsection{Speed Analysis}
@@ -398,7 +357,7 @@ As for distracters, in the end of data there are many faces and the target is mi
 		DLT & C \& MATLAB & 17.0\\ \hline
 		CXT & C \& MATLAB & 15.3\\ \hline
 		ASLA & C \& MATLAB & 8.5\\ \hline
-		DCMT & MATLAB & ?.?\\ \hline
+		DFT & MATLAB & 4\\ \hline
 		TLD & C \& MATLAB & 13.2\\ \hline
 	\end{tabular}
 	\caption{Comparison of average running time on 10 video sequences (in fps).}
