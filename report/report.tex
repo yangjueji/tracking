@@ -192,6 +192,7 @@ We analysis the performance of each algorithms in detail in the following sectio
 
 
 \begin{figure}[hbt]
+	\centering
     \includegraphics[width=200pt]{soccer}
     \caption{success rate score plot of soccer sequences}
     \label{fig:soccer}
@@ -202,6 +203,7 @@ We analysis the performance of each algorithms in detail in the following sectio
 \subsubsection{Subway}
 
 \begin{figure}[hbt]
+	\centering
     \includegraphics[width=200pt]{subway}
     \caption{success rate score plot of subway sequences}
     \label{fig:subway}
@@ -214,6 +216,7 @@ We analysis the performance of each algorithms in detail in the following sectio
 \subsubsection{Suv}
 
 \begin{figure}[hbt]
+	\centering
     \includegraphics[width=200pt]{suv}
     \caption{success rate score plot of suv sequences}
     \label{fig:suv}
@@ -226,6 +229,7 @@ We analysis the performance of each algorithms in detail in the following sectio
 \subsubsection{Sylvester}
 
 \begin{figure}[hbt]
+	\centering
     \includegraphics[width=200pt]{sylvester}
     \caption{success rate score plot of sylvester sequences}
     \label{fig:sylvester}
@@ -238,6 +242,7 @@ We analysis the performance of each algorithms in detail in the following sectio
 In the tiger1 sequence, the target is a fast moving toy with motion blur.
 
 \begin{figure}[hbt]
+	\centering
     \includegraphics[width=200pt]{tiger1}
     \caption{success rate score plot of tiger1 sequences}
     \label{fig:tiger1}
@@ -252,6 +257,7 @@ In the tiger1 sequence, the target is a fast moving toy with motion blur.
 In the tiger1 sequence, the target is a fast moving toy with motion blur.
 
 \begin{figure}[hbt]
+	\centering
     \includegraphics[width=200pt]{tiger2}
     \caption{success rate score plot of tiger2 sequences}
     \label{fig:tiger2}
@@ -266,6 +272,7 @@ In the tiger1 sequence, the target is a fast moving toy with motion blur.
 In the trellis sequence, each tracker has to track a face in outdoor environments with a abrupt change of motion.
 
 \begin{figure}[hbt]
+	\centering
     \includegraphics[width=200pt]{trellis}
     \caption{success rate score plot of trellis sequences}
     \label{fig:trellis}
@@ -278,6 +285,7 @@ In the trellis sequence, each tracker has to track a face in outdoor environment
 \subsubsection{Walking}
 
 \begin{figure}[hbt]
+	\centering
     \includegraphics[width=200pt]{walking}
     \caption{success rate score plot of walking sequences}
     \label{fig:walking}
@@ -290,6 +298,7 @@ In the trellis sequence, each tracker has to track a face in outdoor environment
 \subsubsection{Walking2}
 
 \begin{figure}[hbt]
+    \centering
     \includegraphics[width=200pt]{walking2}
     \caption{success rate score plot of walking2 sequences}
     \label{fig:walking2}
@@ -302,9 +311,10 @@ In the trellis sequence, each tracker has to track a face in outdoor environment
 In the woman sequence, the woman is severely occluded several times by the parked cars.
 
 \begin{figure}[hbt]
-  \includegraphics[width=200pt]{woman}
-  \caption{success rate score plot of woman sequences}
-  \label{fig:woman}
+	\centering
+	\includegraphics[width=200pt]{woman}
+	\caption{success rate score plot of woman sequences}
+	\label{fig:woman}
 \end{figure}
 
 \textbf{CXT.} The combination of Deformation, Motion Blur and Fast Motion make detection harder. The Supports and Distracters don't work better in these factors. Fast Motion makes it hard to detect the local key-points around the object having motion correlation with the target in a short time span. Deformation and Motion Blur seriously affects to find the target.
@@ -312,24 +322,32 @@ In the woman sequence, the woman is severely occluded several times by the parke
 Struck detects 9 frames per second with budget size of 100 and Haar feature.
 In these ten image sequence, truck performs not good in Soccer and SUV.
 Soccer image has many pieces of ribbons which has stronger effect on Haar feature than human faces.~\ref{fig:struck_soccer}
+
 \begin{figure}[hbt]
+    \centering
     \includegraphics[width=140pt]{struck_soccer}
     \caption{Struck algorithm test on the soccer sequence, the backgourd has much more significant visual features than the player's face.}
     \label{fig:struck_soccer}
 \end{figure}
+
 The big variance of background near the target causes bad performance.
 In SUV image, the SUV is occluded by trees and traffic lights, histogram of color feature is litter better than the Haar feature.
 SUV's visual feature is also like the background road which is a reason for detected position stuck in the road.~\ref{fig:struck_suv} ~\ref{fig:struck_suv_out_of_view}
+
 \begin{figure}[hbt]
+	\centering
     \includegraphics[width=140pt]{struck_suv}
     \caption{Struck algorithm test on the suv sequence. The tree has much more significant visual features than the suv on the left.}
     \label{fig:struck_suv}
 \end{figure}
+
 \begin{figure}[hbt]
+	\centering
     \includegraphics[width=140pt]{struck_suv_out_of_view}
     \caption{Struck algorithm test on the suv sequence. When suv leave the view, the predict bounding box will stay beside, which makes the right half of the box effects the tracker.}
     \label{fig:struck_suv_out_of_view}
 \end{figure}
+
 In other image sequences, the struck algorithm performs quite well.
 
 DLT detects 4~5 frames per second.
