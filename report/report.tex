@@ -149,71 +149,11 @@ We represent average running time in fps to give readers a more direct sense.
 \section{Experiments}
 
 We choose 10 image sequences from website \cite{dataset} to cover all situations.
-For each tracker, we fine-tuned parameters in the source code by our hand for each sequences.
+For each tracker, we fine-tuned parameters in the source code by our hand for each sequences to show the best of each algorithms. Then we show how each algorithms performs, and analysis why it is good or bad. What's more, we compute the average running time of each algorithms to analysis whether it is sufficient for real-time applications. 
 
 \subsection{Sequences Analysis}
 
 The performance in each sequence for all the trackers is summarized by the success plots as shown in Fig~\ref{fig:soccer} to Fig~\ref{fig:woman}.
-
-\begin{figure}[hbt]
-    \includegraphics[width=200pt]{soccer}
-    \caption{success rate score plot of soccer sequences}
-    \label{fig:soccer}
-\end{figure}
-
-\begin{figure}[hbt]
-    \includegraphics[width=200pt]{subway}
-    \caption{success rate score plot of subway sequences}
-    \label{fig:subway}
-\end{figure}
-
-\begin{figure}[hbt]
-    \includegraphics[width=200pt]{suv}
-    \caption{success rate score plot of suv sequences}
-    \label{fig:suv}
-\end{figure}
-
-\begin{figure}[hbt]
-    \includegraphics[width=200pt]{sylvester}
-    \caption{success rate score plot of sylvester sequences}
-    \label{fig:sylvester}
-\end{figure}
-
-\begin{figure}[hbt]
-    \includegraphics[width=200pt]{tiger1}
-    \caption{success rate score plot of tiger1 sequences}
-    \label{fig:tiger1}
-\end{figure}
-
-\begin{figure}[hbt]
-    \includegraphics[width=200pt]{tiger2}
-    \caption{success rate score plot of tiger2 sequences}
-    \label{fig:tiger2}
-\end{figure}
-
-\begin{figure}[hbt]
-    \includegraphics[width=200pt]{trellis}
-    \caption{success rate score plot of trellis sequences}
-    \label{fig:trellis}
-\end{figure}
-
-\begin{figure}[hbt]
-    \includegraphics[width=200pt]{walking}
-    \caption{success rate score plot of walking sequences}
-    \label{fig:walking}
-\end{figure}
-
-\begin{figure}[hbt]
-    \includegraphics[width=200pt]{walking2}
-    \caption{success rate score plot of walking2 sequences}
-    \label{fig:walking2}
-\end{figure}
-
-\begin{figure}[hbt]
-  \includegraphics[width=200pt]{woman}
-  \caption{success rate score plot of woman sequences}
-  \label{fig:woman}
-\end{figure}
 
 Struck detects 9 frames per second with budget size of 100 and Haar feature.
 In these ten image sequence, truck performs not good in Soccer and SUV.
@@ -222,11 +162,131 @@ The big variance of background near the target causes bad performance.
 In SUV image, the SUV is occluded by trees and traffic lights, histogram of color feature is litter better than the Haar feature.
 SUV's visual feature is also like the background road which is a reason for detected position stuck in the road.
 
-DLT detects 4~5 frames per second. In the tiger1 and tiger2 sequence, the target is a fast moving tool with motion blur. DLT with a higher value of x and y translation can track tiger1 successfully, while lost track of tiger2 in about frame 160. In the woman sequence, the woman is severely occluded several times by the parked cars. DLT tracker fails when the woman walks close to the car at about frame 130.
 
-In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by moving or feature-similar objects, ASLA performs bad in this sequence. In the Sylvester sequence，the target is moving with illumination varying, ASLA does well in this sequence. In other sequence, it got lost in some frames but follows almost frames overall. From another respective,  though the tracker follows the target, the areas it predict has deviation compared with ground truth.
+CXT did a good job in the dataset of Suv, Sylvester and Trellis. CXT did ok in the dataset of Tiger1, Tiger2, Subway, Walking1 and Walking2. CXT perform badly in the dataset of Soccer and Women.
 
-\subsection{Attribute-based Performance Analysis}
+As far as ASLA alone considered, it performs best in Walking and Subway, well in Suv and Sylvester, badly in Soccer, Walking2, Women and 2 Tiger Sequences. 
+In our explanation, because of it’s method based on structural local sparse appearance model and alignment pooling, it can locate the target more accurate and handle occlusion. 
+
+We analysis the performance of each algorithms in detail in the following sections. Each algorithms picks up various crucial sequences to analysis how the algorithm performs in that situation.
+
+\subsubsection{Soccer}
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{soccer}
+    \caption{success rate score plot of soccer sequences}
+    \label{fig:soccer}
+\end{figure}
+
+\textbf{CXT.} In this dataset, since the direction of person's face turned around and the condition surrounding the face changed dramatically, Supporters can't help to verify the location of the target. As for distracters, in the end of data there are many faces and the target is missing, so it's hard to find the right face.
+
+\subsubsection{Subway}
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{subway}
+    \caption{success rate score plot of subway sequences}
+    \label{fig:subway}
+\end{figure}
+
+\textbf{CXT.} It shows that Supports and Distracters don't do well in detecting the deformation.
+
+\textbf{ALSA.} Because the tracker uses affine motion models, it handles well in scale variation (SV). That’s the explanation why ASLA performs best in Walking and Subway. 
+
+\subsubsection{Suv}
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{suv}
+    \caption{success rate score plot of suv sequences}
+    \label{fig:suv}
+\end{figure}
+
+\textbf{CXT.} In this sequence and sylvester sequence, tt shows that when the target is partially or fully occluded or some portion of the target leaves the view, CXT can find the target correctly. Since CXT uses the Supports which are local key-points around the object having motion correlation with the target in a short time span, CXT can find the location of target more precisely.
+
+\text{ALSA.} The results in Suv and Sylvester suggest that structured learning and local sparse representations, adopted by ASLA, are effective in dealing with occlusions (OCC).
+
+\subsubsection{Sylvester}
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{sylvester}
+    \caption{success rate score plot of sylvester sequences}
+    \label{fig:sylvester}
+\end{figure}
+
+\textbf{CXT.} It shows that illumination variation, in-plane rotation and out-of-plane rotation don't matter detection acutely. The reason might be Supports and Distracters that give more evidences to find the target and eliminate the wrong object.
+
+\subsubsection{Tiger1}
+
+In the tiger1 sequence, the target is a fast moving tool with motion blur.
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{tiger1}
+    \caption{success rate score plot of tiger1 sequences}
+    \label{fig:tiger1}
+\end{figure}
+
+\textbf{CXT} It shows that when the motion of the ground truth is fast and the target has a deformation, CXT can't detect the target. Because the condition changes dramatically, Supports and Distracters can't be calculated precisely. And they might not do well in detecting the deformation.
+
+\textbf{DLT} DLT with a higher value of x and y translation can track tiger1 successfully.
+
+\subsubsection{Tiger2}
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{tiger2}
+    \caption{success rate score plot of tiger2 sequences}
+    \label{fig:tiger2}
+\end{figure}
+
+\textbf{CXT} It shows that when the motion of the ground truth is fast and the target has a deformation, CXT can't detect the target. Because the condition changes dramatically, Supports and Distracters can't be calculated precisely. And they might not do well in detecting the deformation.
+
+\textbf{DLT} DLT with a higher value of x and y translation can track tiger1 successfully, while lost track of tiger2 in about frame 160. In the woman sequence, the woman is severely occluded several times by the parked cars. DLT tracker fails when the woman walks close to the car at about frame 130.
+
+\subsubsection{Trellis}
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{trellis}
+    \caption{success rate score plot of trellis sequences}
+    \label{fig:trellis}
+\end{figure}
+
+\textbf{CXT.} In this sequence and trellis, it shows that illumination variation, in-plane rotation and out-of-plane rotation don't matter detection acutely. The reason might be Supports and Distracters that give more evidences to find the target and eliminate the wrong object.
+
+\textbf{DLT.}
+
+\subsubsection{Walking}
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{walking}
+    \caption{success rate score plot of walking sequences}
+    \label{fig:walking}
+\end{figure}
+
+\textbf{CXT} It shows that Supports and Distracters don't do well in detecting the deformation.
+
+\textbf{ALSA.} While comparing the result in Walking with in Walking2, the tracker behaviors differently. We analysis that ASLA always fails in subset with some frames where the target is fully or partially obstruct by the similar. 
+
+\subsubsection{Walking2}
+
+\begin{figure}[hbt]
+    \includegraphics[width=200pt]{walking2}
+    \caption{success rate score plot of walking2 sequences}
+    \label{fig:walking2}
+\end{figure}
+
+\textbf{CXT} It shows that Low Resolution might influence the detection. Since low resolution and occlusion, it will be hard to find appropriate Supports to find the target.
+
+\subsubsection{Woman}
+
+In the woman sequence, the woman is severely occluded several times by the parked cars.
+
+\begin{figure}[hbt]
+  \includegraphics[width=200pt]{woman}
+  \caption{success rate score plot of woman sequences}
+  \label{fig:woman}
+\end{figure}
+
+\textbf{CXT} The combination of Deformation, Motion Blur and Fast Motion make detection harder. The Supports and Distracters don't work better in these factors. Fast Motion makes it hard to detect the local key-points around the object having motion correlation with the target in a short time span. Deformation and Motion Blur seriously affects to find the target.
+
+\textbf{DLT} DLT tracker fails when the woman walks close to the car and the camera is rolling in. A dramatically change both of scale and occlusion is really hard to handle.
 
 \subsection{Speed Analysis}
 
@@ -241,11 +301,11 @@ In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by
 		DCMT & ? & ?.?\\ \hline
 		TLD & C \& MATLAB & 13.2\\ \hline
 	\end{tabular}
-	\caption{Comparison of average running time on woman video sequences (in fps).}
+	\caption{Comparison of average running time on 10 video sequences (in fps).}
 	\label{table:time}
 \end{table}
 
-We also list the average running time of 10 sequence in detail in Table~\ref{table:time}. Thanks to advances of the GPU technology, DLT can achieve an average frame rate of 17 fps which is sufficient for many real-time applications.
+We also list the average running time of each algorithms of 10 sequence in detail in Table~\ref{table:time}. Thanks to advances of the GPU technology, DLT can achieve an average frame rate of 17 fps. While all algorithms we evaluated are sufficient for many real-time applications.
 
 
 \section{Conclusions}
