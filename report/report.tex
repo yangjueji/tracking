@@ -45,7 +45,26 @@ We find these methods have mainly two problems:
 To test the algorithms on these two problems, we pick out some notable image sequences, and discuss the performance of each algorithm to see whether the two problems happened on them.
 
 \section{Related Work}
+In this section, we review recent algorithms related to the six methods we chosen.
+These methods are based on quite different modules so there is much related work.
+Due to limitations on space, we just choose the important based work of each method.
 
+DCMT uses mixed discrete-continuous formulation to describe the situation: data association between target detections and trajectories is kept discrete, nonetheless trajectory ﬁtting is performed in the continuous domain.
+In contrast to previous discrete-continuous approaches based on Markov Chain Monte Carlo (MCMC) sampling\cite{rw4}\cite{rw5}, the data association continues to be amenable to well-established discrete optimization techniques for labeling problems, such as graph cuts\cite{rw2}\cite{rw3} and (tree-reweighted) belief propagation\cite{rw1}.
+
+DLT attempts to combine the philosophies behind both generative and discriminative trackers by developing a robust discriminative tracker which uses an effective image representation learned automatically.
+Some popular generative trackers include incremental visual tracking (IVT), which represents the tracked object based on principal component analysis (PCA), and the l1 tracker (L1T).
+Some representative trackers in this category are the online AdaBoost (OAB) tracker, multiple instance learning (MIL) tracker, and structured output tracker.
+
+ASLA bears some similarity to\cite{rw6} in the use of local sparse representations.
+However, it samples larger overlapped local image patches with fixed spatial layout where there are more spatial structural information in them.
+
+CXT builds on P-N learning\cite{rw7}. 
+Basically it inherits the power of tracking-learning-detection (TLD)\cite{rw8} framework while focusing on exploring the structure of unlabeled data.
+To address the issue that it's vulnerable to switching to another similar object, it proposes to employ the tracking-learning-detection concept of this tracker to not only explore the structure of positive and negative data but also the more semantic data: Distracters and Supporters.
+
+Struck makes use of the structured output SVM framework of\cite{rw9} because of this flexibility of SVMs and their natural generalization to structured output spaces.
+In particular, we extend the online structured output SVM learning method proposed in\cite{cw10}\cite{cw11} and adapt it to the tracking problem.
 
 \section{Evaluated Algorithms}
 In this report, we investigate 6 visual tracking works and search for an appropriate evaluation criteria for those work. The algorithm details of these 6 tracking methods are listed as follow:
@@ -220,9 +239,39 @@ The big variance of background near the target causes bad performance.
 In SUV image, the SUV is occluded by trees and traffic lights, histogram of color feature is litter better than the Haar feature.
 SUV's visual feature is also like the background road which is a reason for detected position stuck in the road.
 
-DLT detects 4~5 frames per second. In the tiger1 and tiger2 sequence, the target is a fast moving tool with motion blur. DLT with a higher value of x and y translation can track tiger1 successfully, while lost track of tiger2 in about frame 160. In the woman sequence, the woman is severely occluded several times by the parked cars. DLT tracker fails when the woman walks close to the car at about frame 130.
+DLT detects 4~5 frames per second.
+In the tiger1 and tiger2 sequence, the target is a fast moving tool with motion blur.
+DLT with a higher value of x and y translation can track tiger1 successfully, while lost track of tiger2 in about frame 160. In the woman sequence, the woman is severely occluded several times by the parked cars. DLT tracker fails when the woman walks close to the car at about frame 130.
 
-In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by moving or feature-similar objects, ASLA performs bad in this sequence. In the Sylvester sequence，the target is moving with illumination varying, ASLA does well in this sequence. In other sequence, it got lost in some frames but follows almost frames overall. From another respective,  though the tracker follows the target, the areas it predict has deviation compared with ground truth.
+As far as ASLA alone considered, it performs best in Walking and Subway, well in Suv and Sylvester, badly in Soccer, Walking2, Women and 2 Tiger Sequences. 
+In our explanation, because of it’s method based on structural local sparse appearance model and alignment pooling, it can locate the target more accurate and handle occlusion. 
+The results in Sylvester and Suv suggest that structured learning and local sparse representations, adopted by ASLA, are effective in dealing with occlusions ( OCC ).
+In addition, because the tracker uses affine motion models, it handles well in scale variation ( SV ).
+That’s the explanation why ASLA performs best in Walking and Subway. While comparing the result in Walking with in Walking2, the tracker behaviors differently.
+We analysis that ASLA always fails in subset with some frames where the target is fully or partially obstruct by the similar.
+The same situation are in Woman and Trellis. When an object moves fast，as results of 2 Tiger subsets show, the tracker does not perform well in this subset due to the poor dynamic model.
+Also is notedly that in the experiment, we adopt the the given codes by ASLA( almost similar with the one shared by benchmark) without tuning.
+But some results disagree with the results in original paper.
+But we prefer to believe that if is allowed to tune parameters, the results would be better.
+
+CXT did a good job in the dataset of Suv, Sylvester and Trellis.
+Suv shows that when the target is partially or fully occluded or some portion of the target leaves the view, CXT can find the target correctly.
+Since CXT uses the Supports which are local key-points around the object having motion correlation with the target in a short time span, CXT can find the location of target more precisely.
+Sylvester and Trellis show that illumination variation, in-plane rotation and out-of-plane rotation don't matter detection acutely.
+The reason might be Supports and Distracters that give more evidences to find the target and eliminate the wrong object.
+CXT did ok in the dataset of Tiger1, Tiger2, Subway, Walking1 and Walking2.
+Tiger1 and Tiger2 show that when the motion of the ground truth is fast and the target has a deformation, CXT can't detect the target.
+Because the condition changes dramatically, Supports and Distracters can't be calculated precisely.
+And they might not do well in detecting the deformation.
+Subway and Walking1 show that Supports and Distracters don't do well in detecting the deformation.
+Walking2 shows that Low Resolution might influence the detection. Since low resolution and occlusion, it will be hard to find appropriate Supports to find the target.
+CXT perform badly in the dataset of Soccer and Women.
+In Women, the combination of Deformation, Motion Blur and Fast Motion make detection harder.
+The Supports and Distracters don't work better in these factors.
+Fast Motion makes it hard to detect the local key-points around the object having motion correlation with the target in a short time span.
+Deformation and Motion Blur seriously affects to find the target.
+In Soccer, since the direction of person's face turned around and the condition surrounding the face changed dramatically, Supporters can't help to verify the location of the target.
+As for distracters, in the end of data there are many faces and the target is missing, so it's hard to find the right face.
 
 \subsection{Attribute-based Performance Analysis}
 
@@ -236,7 +285,7 @@ In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by
 		DLT & C \& MATLAB & 17.0\\ \hline
 		CXT & C \& MATLAB & 15.3\\ \hline
 		ASLA & C \& MATLAB & 8.5\\ \hline
-		DCMT & ? & ?.?\\ \hline
+		DCMT & MATLAB & ?.?\\ \hline
 		TLD & C \& MATLAB & 13.2\\ \hline
 	\end{tabular}
 	\caption{Comparison of average running time on woman video sequences (in fps).}
@@ -245,13 +294,14 @@ In the Woman, Walking, Walking2 and Subway sequence, the target is obstructed by
 
 We also list the average running time of 10 sequence in detail in Table~\ref{table:time}. Thanks to advances of the GPU technology, DLT can achieve an average frame rate of 17 fps which is sufficient for many real-time applications.
 
-
 \section{Conclusions}
 In this paper, we run massive amount of experiments to evaluate the performance of 6 selected tracking algorithms.
 We use different image sequences to evaluate algorithms in different situations.
 Each algorithm has its own better situation and worse situation.
 Struck is good for slow moving objects which do not leave the view. And the target should better not have background clutters which can make the image feature significantly different.
 Such as DLT is good at handling occlusion, while no so good at handling abrupt illumination changes.
+ASLA perform well in images with occlusion and scale variation, but bad in sequeces with fast motion targets.
+CXT is affected much by deformation and motion blur, but is able to track the target with in-plane and out-plane rotation.
 
 
 \begin{thebibliography}{99}
@@ -300,6 +350,38 @@ T. B. Dinh, N. Vo, and G. Medioni. Context Tracker: Exploring supporters and dis
 \bibitem{dcmt}
 A.Andriyenko, K.Schindler, S.Roth. Discrete-Continuous Optimization for Multi-Target Tracking. CVPR 2012.
 
+\bibitem{rw1}
+Y. Boykov, O. Veksler, and R. Zabih. Fast approximate energy minimization via graph cuts. PAMI, 23(11), 2001
+
+\bibitem{rw2}
+V. Kolmogorov. Convergent tree-reweighted message passing for energy minimization. PAMI, 28(10), 2006.
+
+\bibitem{rw3}
+V. Kolmogorov and R. Zabih. What energy functions can be minimized via graph cuts? PAMI, 26(2), 2004
+
+\bibitem{rw4}
+Z. Khan, T. Balch, and F. Dellaert. MCMC data association and sparse factorization updating for real time multitarget tracking with merged and multiple measurements. PAMI’06.
+
+\bibitem{rw5}
+S. Oh, S. Russell, and S. Sastry. Markov chain Monte Carlo data association for general multiple-target tracking problems. IEEE Conference on Decision and Control, 2004.
+
+\bibitem{rw6}
+B. Liu, J. Huang, L. Yang, and C. A. Kulikowski. Robust tracking using local sarse appearance model and k-selection. In CVPR, 2011.
+
+\bibitem{rw7}
+Z. Kalal, J. Matas, and K. Mikolajczyk. P-N learning: Bootstrapping binary classifiers by structural constraints. In CVPR, pages 49–56, 2010.
+
+\bibitem{rw8}
+Z. Kalal, J. Matas, and K. Mikolajczyk. Online learning of robust object detectors during unstable tracking. In OLCV, pages 1417–1424, 2009.
+
+\bibitem{rw9}
+I. Tsochantaridis, T. Joachims, T. Hofmann, and Y. Altun. Large Margin Methods for Structured and Interdependent Output Variables. JMLR, 6:1453–1484, Dec. 2005.
+
+\bibitem{rw10}
+A. Bordes, L. Bottou, P. Gallinari, and J. Weston. Solving multiclass support vector machines with LaRank. In Proc. ICML, 2007. 2, 4
+
+\bibitem{rw11}
+A. Bordes, N. Usunier, and L. Bottou. Sequence Labelling SVMs Trained in One Pass. In Proc. ECML-PKDD, 2008. 2, 4, 5
 
 \bibitem{dataset}
 \url{https://sites.google.com/site/trackerbenchmark/benchmarks/v10}
